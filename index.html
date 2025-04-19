@@ -34,7 +34,7 @@
         // var profile = "https://edge.huangxin.org/images/2024/04/3571424985.jpg"; // Enter a image url or your gravatar email, or leave the variable blank to use the default avatar
 
         // Leave relevant variables empty or undelcared if you do not wish to setup certain payment methods
-        var usage = "payment"; // Available variables: `payment`, `donate`, require `multilingual`
+        var usage = "donate"; // Available variables: `payment`, `donate`, require `multilingual`
         var wechat = "wxp://f2f04oJmM0v3ZQRHp_ci_LWhGAE1MGmnug9q70bIAGQmdeo";
         var alipay = "https://qr.alipay.com/a6x11732pyuue0s59mdzp97";
         var paypal = "https://paypal.me/maixiyu?country.x=C2&locale.x=zh_XC";
@@ -98,7 +98,7 @@
                 if (profile.startsWith('assets/') || profile.startsWith('/assets/')) {
                     profile_url = profile; // 直接使用相对路径
                 } else {
-                    profile_url = 'https://fastly.jsdelivr.net/gh/qr-merger/merger@0.28.6/assets/images/placeholder.png'; // 默认图片
+                    profile_url = 'https://fastly.jsdelivr.net/gh/cubeyu/DonatePage@main/assets/images/placeholder.png'; // 默认图片
                 }
             }
             document.getElementById("i").style.background = "url('" + profile_url + "') no-repeat center/cover"; // Set center picture
