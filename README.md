@@ -17,9 +17,11 @@
  
 1. 在修改 index.html 文件时，请务必谨慎操作，避免因代码错误导致网站无法正常运行。若对HTML代码不熟悉，建议提前备份文件。
 2. 搭建过程中若遇到问题，可以查阅GitHub的相关文档，或在技术交流平台上搜索解决方案，也可向本项目的社区或作者寻求帮助。
+
 index.html
 ![屏幕截图 2025-04-22 205335](https://github.com/user-attachments/assets/cc27ee73-2c3e-401d-8a06-db74f39ca23b)
-![屏幕截图 2025-04-22 205351](https://github.com/user-attachments/assets/b3e0144c-fc7f-4b06-be1c-48760f1599ff)\
+![屏幕截图 2025-04-22 205351](https://github.com/user-attachments/assets/b3e0144c-fc7f-4b06-be1c-48760f1599ff)
 ![屏幕截图 2025-04-22 205358](https://github.com/user-attachments/assets/61eb3667-a394-4e1d-a037-39a1c432d601)
+
 function.js
 ![屏幕截图 2025-04-22 205610](https://github.com/user-attachments/assets/adfbfa1f-ed59-4b41-a3cf-d69fef629285)
