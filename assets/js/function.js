@@ -53,7 +53,7 @@ if (typeof branding === "undefined" || branding === null || branding === "" || b
   var aftertitle = ""
 }
 else if (branding === true || branding === "true") {
-  var aftertitle = " | Merger"
+  var aftertitle = " | Donate"
 }
 // Add multilingual suppport
 if (multilingual === false) {
