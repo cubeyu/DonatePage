@@ -86,5 +86,31 @@ gulp.task('build-html', async function () {
   gulp.start('minify-html');
 })
 
+// 添加复制文件到public目录的任务
+gulp.task('copy-to-public', async function() {
+  // 复制所有HTML文件
+  gulp.src('./*.html')
+    .pipe(gulp.dest('./public/'));
+  
+  // 复制assets目录
+  gulp.src('./assets/**/*')
+    .pipe(gulp.dest('./public/assets/'));
+    
+  // 复制根目录下可能需要的其他文件
+  return gulp.src([
+    './LICENSE',
+    './README.md',
+    './favicon.ico',
+    './*.png',
+    './*.jpg',
+    './*.svg'
+  ], { allowEmpty: true })
+    .pipe(gulp.dest('./public/'));
+});
+
 gulp.task('compile', gulp.series(gulp.parallel('pack-css', 'pack-js')));
-gulp.task('default', gulp.series(gulp.parallel('pack-js', 'pack-css'), 'minify-html'));
+gulp.task('default', gulp.series(
+  gulp.parallel('pack-js', 'pack-css'), 
+  'minify-html',
+  'copy-to-public'
+));
