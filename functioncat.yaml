@@ -30,6 +30,6 @@ apps:
               allowOrigin: "*"
               maxAge: 86400
         build:
-          command: npm run build
-          script: build
-          output: ./
+          command: "npm install && npm run build"
+          script: "npm run build"
+          output: "./public"

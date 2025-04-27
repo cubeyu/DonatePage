@@ -27,7 +27,7 @@
     "sass": "^1.87.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": "18.x"
   },
   "dependencies": {
     "jquery": "^3.7.1"
