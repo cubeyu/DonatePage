@@ -15,6 +15,20 @@ apps:
         provision:
           root_path: ./
           type: nodejs18x
+          static:
+            webPath: /
+            indexDocument: index.html
+            errorDocument: index.html
+            cors:
+              enable: true
+              allowMethods:
+                - GET
+                - HEAD
+                - OPTIONS
+              allowHeaders:
+                - "*"
+              allowOrigin: "*"
+              maxAge: 86400
         build:
           command: npm run build
           script: build
