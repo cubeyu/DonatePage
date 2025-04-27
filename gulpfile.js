@@ -74,7 +74,7 @@ gulp.task('minify-html', async function () {
 // });
 
 gulp.task('replace-js-css', function (done) {
-  return gulp.src('./merger.html')
+  return gulp.src('./index.html')
     .pipe(htmlreplace({
       'css': 'assets/style.main.css',
       'js': 'assets/function.main.js'
