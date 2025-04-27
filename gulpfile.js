@@ -18,9 +18,7 @@ gulp.task('pack-css', function () {
   }))
   .pipe(gulp.dest('./assets/bundles/'));
 
-  if (process.env.NODE_ENV === 'production') {
-      stream = stream.pipe(gulp.dest('./public/assets/'));
-  }
+  stream = stream.pipe(gulp.dest('./public/assets/'));
 
   return stream;
 });
@@ -36,9 +34,7 @@ gulp.task('pack-js', function () {
   .pipe(terser())
   .pipe(gulp.dest('./assets/bundles/'));
 
-  if (process.env.NODE_ENV === 'production') {
-      stream = stream.pipe(gulp.dest('./public/assets/'));
-  }
+  stream = stream.pipe(gulp.dest('./public/assets/'));
 
   return stream;
 });
