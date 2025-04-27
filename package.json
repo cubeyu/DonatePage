@@ -8,7 +8,7 @@
     "url": "https://github.com/cubeyu/DonatePage"
   },
   "license": "GPL-3.0-or-later",
-  "author": "Cubeyu <cubeyu@aliyun.com>",
+  "author": "Cubeyu  <cubeyu@aliyun.com>",
   "scripts": {
     "compile": "gulp compile",
     "build": "cross-env NODE_ENV='production' gulp"
