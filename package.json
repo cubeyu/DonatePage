@@ -11,7 +11,7 @@
   "author": "Cubeyu  <cubeyu@aliyun.com>",
   "scripts": {
     "compile": "gulp compile",
-    "build": "cross-env NODE_ENV='production' gulp"
+    "build": "cross-env NODE_ENV='production' gulp && cp -r build public"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -19,7 +19,7 @@ gulp.task('pack-css', function () {
   .pipe(gulp.dest('./assets/bundles/'));
 
   if (process.env.NODE_ENV === 'production') {
-      stream = stream.pipe(gulp.dest('./build/assets/'));
+      stream = stream.pipe(gulp.dest('./public/assets/'));
   }
 
   return stream;
@@ -37,14 +37,14 @@ gulp.task('pack-js', function () {
   .pipe(gulp.dest('./assets/bundles/'));
 
   if (process.env.NODE_ENV === 'production') {
-      stream = stream.pipe(gulp.dest('./build/assets/'));
+      stream = stream.pipe(gulp.dest('./public/assets/'));
   }
 
   return stream;
 });
 
 gulp.task('minify-html', async function () {
-  return gulp.src(['./build/index.html'], { base: "./" })
+  return gulp.src(['./public/index.html'], { base: "./" })
     .pipe(htmlmin({
       collapseWhitespace: true,
       conservativeCollapse: true,
@@ -80,7 +80,7 @@ gulp.task('replace-js-css', function (done) {
       'js': 'assets/function.main.js'
     }))
     .pipe(rename('index.html'))
-    .pipe(gulp.dest('build/'))
+    .pipe(gulp.dest('public/'))
     .on('end', done);
   });
 
