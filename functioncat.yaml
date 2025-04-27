@@ -17,5 +17,6 @@ apps:
           type: nodejs18x
         build:
           command: npm run build
+          script: build
           output: ./dist
      
