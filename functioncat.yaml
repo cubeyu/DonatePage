@@ -3,7 +3,7 @@ info:
   name: donatepage 
 envs:
   prod:
-    branch: master
+    branch: main
 routes:
   main_env: prod
   main_app: frontend
