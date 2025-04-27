@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
     <title></title>
     <meta charset="utf-8">
-    <meta name="author" content="Cubeyu">
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta content="Cubeyu" name="author">
+    <meta content="initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <meta content="upgrade-insecure-requests" http-equiv="Content-Security-Policy">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/merger/0.28.6/bundles/style.main.css">
     <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
@@ -30,7 +30,6 @@
             subtitle = "跟随进一步的指示以向" + myname + "付款",
             gravatar_url = "https://sdn.geekzu.org/avatar/";
     </script>
-
     <div class="main" id="h">
         <a href="https://github.com/cubeyu" target="_blank" title="访问我的GitHub">
             <i id="i"></i>
@@ -143,7 +142,6 @@
             </p>
         </div>
     </div>
-
     <div class="modal" id="showqrcode">
         <div class="modal-container" role="document">
             <div class="modal-header" id="btncontainer">
@@ -157,31 +155,30 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.18.0/jquery-qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/merger/0.28.6/bundles/function.main.js"></script>
     <script src="assets/bundles/function.main.js"></script>
-
     <script>
         function opentenpay() {
-            selected = "yes";
-            document.getElementById("titleinfo").innerHTML = "手机QQ扫一扫 投喂麦希屿";
-            client = tenpay;
-            showqrcode();
+            selected = "yes",
+            document.getElementById("titleinfo").innerHTML = "手机QQ扫一扫 投喂麦希屿",
+            client = tenpay,
+            showqrcode()
         }
         window._iconfont_svg_string_tenpay = '<svg><symbol id="icon-tenpay" viewBox="0 0 1024 1024"><path d="M868.448 499.2c-1.664-101.504-73.216-179.264-175.36-204.032l0-0.192L346.976 295.04 347.072 294.976C245.952 282.432 175.68 359.36 175.68 459.072l0 106.752c0 36.16 9.472 70.528 28.032 101.056 2.624 4.352 5.44 8.576 8.32 12.736 5.888 8.448 12.16 16.576 18.944 24.32l2.944 3.264c0.448 0.512 0.832 1.088 1.216 1.6 1.088 1.28 2.112 2.496 3.2 3.712 25.216 28.032 56.64 50.24 92.096 65.152 5.184 2.24 10.496 4.224 15.936 6.016 0.064 0 0.064 0.064 0.128 0.064 19.712 6.592 40.704 11.008 62.656 12.992 2.752 0.192 5.44 0.384 8.192 0.576 9.216 0.512 18.496 0.832 27.904 0.704l347.328 0.064c0.32 0 0.704 0 0.96 0 101.632 0 184.832-76.928 185.984-176.96L868.352 513.28C868.736 508.672 868.576 503.936 868.448 499.2zM534.272 725.056c-31.104 0-56.32-25.408-56.32-56.768 0-31.296 25.216-56.768 56.32-56.768 31.168 0 56.384 25.472 56.384 56.768C590.656 699.712 565.44 725.056 534.272 725.056zM640.832 461.632c-17.28 0-31.296-14.144-31.296-31.488 0-17.408 14.016-31.552 31.296-31.552 17.28 0 31.36 14.144 31.36 31.552C672.192 447.488 658.112 461.632 640.832 461.632zM427.712 461.632c-17.344 0-31.36-14.144-31.36-31.488 0-17.408 14.016-31.552 31.36-31.552 17.344 0 31.296 14.144 31.296 31.552C459.072 447.488 445.056 461.632 427.712 461.632z" /></symbol></svg>';
+        
         (function() {
-            var svg = document.querySelector("svg");
-            if (svg) {
-                var div = document.createElement("div");
-                div.innerHTML = window._iconfont_svg_string_tenpay;
-                var symbol = div.querySelector("symbol");
-                svg.appendChild(symbol);
+            var e = document.querySelector("svg");
+            if (e) {
+                var t = document.createElement("div");
+                t.innerHTML = window._iconfont_svg_string_tenpay;
+                var n = t.querySelector("symbol");
+                e.appendChild(n);
             } else {
-                var div = document.createElement("div");
-                div.innerHTML = window._iconfont_svg_string_tenpay;
-                document.body.appendChild(div.firstChild);
+                var t = document.createElement("div");
+                t.innerHTML = window._iconfont_svg_string_tenpay;
+                document.body.appendChild(t.firstChild);
             }
         })();
     </script>

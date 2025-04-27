@@ -1,10 +1,41 @@
 const gulp = require('gulp');
-const terser = require('gulp-terser');
-const concat = require('gulp-concat');
+const sass = require('gulp-sass')(require('sass'));
 const cleanCSS = require('gulp-clean-css');
-const htmlmin = require('gulp-html-minifier-terser');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const htmlmin = require('gulp-htmlmin');
+const terser = require('gulp-terser');
 const rename = require('gulp-rename');
 const htmlreplace = require('gulp-html-replace');
+
+// 编译 SASS 文件
+gulp.task('styles', () => {
+  return gulp.src('src/scss/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('dist/css'));
+});
+
+// 压缩 JavaScript 文件
+gulp.task('scripts', () => {
+  return gulp.src('src/js/**/*.js')
+    .pipe(uglify())
+    .pipe(concat('main.min.js'))
+    .pipe(gulp.dest('dist/js'));
+});
+
+// 压缩 HTML 文件
+gulp.task('html', () => {
+  return gulp.src('src/**/*.html')
+    .pipe(htmlmin({ collapseWhitespace: true }))
+    .pipe(gulp.dest('dist'));
+});
+
+// 复制静态资源
+gulp.task('assets', () => {
+  return gulp.src(['src/images/**/*', 'src/fonts/**/*'], { base: 'src' })
+    .pipe(gulp.dest('dist'));
+});
 
 gulp.task('pack-css', function () {
   // Start the stream from the source files
