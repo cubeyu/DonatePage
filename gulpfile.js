@@ -8,7 +8,7 @@ const htmlreplace = require('gulp-html-replace');
 
 gulp.task('pack-css', function () {
   // Start the stream from the source files
-  let stream = gulp.src([
+  return gulp.src([
       './assets/styles/spectre.css/spectre-modified.css',
       './assets/styles/style.css'
   ])
@@ -17,14 +17,10 @@ gulp.task('pack-css', function () {
       level: 2
   }))
   .pipe(gulp.dest('./assets/bundles/'));
-
-  stream = stream.pipe(gulp.dest('./public/assets/'));
-
-  return stream;
 });
 
 gulp.task('pack-js', function () {
-  let stream = gulp.src([
+  return gulp.src([
       './assets/js/iconfont.js',
       './node_modules/jquery/dist/jquery.js',
       './assets/js/jquery-qrcode.js',
@@ -33,14 +29,14 @@ gulp.task('pack-js', function () {
   .pipe(concat('function.main.js'))
   .pipe(terser())
   .pipe(gulp.dest('./assets/bundles/'));
-
-  stream = stream.pipe(gulp.dest('./public/assets/'));
-
-  return stream;
 });
 
 gulp.task('minify-html', async function () {
-  return gulp.src(['./public/index.html'], { base: "./" })
+  return gulp.src(['./index.html'], { base: './' })
+    .pipe(htmlreplace({
+      'css': 'assets/bundles/style.main.css',
+      'js': 'assets/bundles/function.main.js'
+    }))
     .pipe(htmlmin({
       collapseWhitespace: true,
       conservativeCollapse: true,
@@ -80,10 +76,15 @@ gulp.task('replace-js-css', function (done) {
     .on('end', done);
   });
 
+gulp.task('copy-images', function() {
+  return gulp.src('./assets/images/**/*')
+    .pipe(gulp.dest('./public/assets/images/'));
+});
+
 gulp.task('build-html', async function () {
   gulp.start('replace-js-css');
   gulp.start('minify-html');
 })
 
 gulp.task('compile', gulp.series(gulp.parallel('pack-css', 'pack-js')));
-gulp.task('default', gulp.series(gulp.parallel('replace-js-css', 'pack-js', 'pack-css' ), 'minify-html'));
+gulp.task('default', gulp.series(gulp.parallel('pack-js', 'pack-css'), 'minify-html'));
