@@ -18,4 +18,4 @@ apps:
         build:
           command: npm run build
           script: build
-          output: ./dist
+          output: ./
