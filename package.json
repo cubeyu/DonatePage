@@ -11,7 +11,7 @@
   "author": "Cubeyu  <cubeyu@aliyun.com>",
   "scripts": {
     "start": "npx http-server -o",
-    "build": "gulp build"
+    "build": "gulp default"
   },
   "devDependencies": {
     "gulp": "^4.0.2",

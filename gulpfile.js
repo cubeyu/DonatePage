@@ -139,6 +139,12 @@ gulp.task('copy-to-public', async function() {
     .pipe(gulp.dest('./public/'));
 });
 
+gulp.task('build', gulp.series(
+  gulp.parallel('pack-js', 'pack-css'),
+  'minify-html',
+  'copy-to-public'
+));
+
 gulp.task('compile', gulp.series(gulp.parallel('pack-css', 'pack-js')));
 gulp.task('default', gulp.series(
   gulp.parallel('pack-js', 'pack-css'), 
