@@ -14,5 +14,8 @@ apps:
       prod:
         provision:
           root_path: ./
-          type: static
+          type: nodejs18x
+        build:
+          command: npm run build
+          output: ./dist
      
