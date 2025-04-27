@@ -1,0 +1,18 @@
+system: 1.0.0
+info:
+  name: donatepage 
+envs:
+  prod:
+    branch: master
+routes:
+  main_env: prod
+  main_app: frontend
+apps:
+  frontend:
+    type: web_frontend
+    envs:
+      prod:
+        provision:
+          root_path: ./
+          type: static
+     

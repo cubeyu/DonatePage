@@ -1,0 +1,12 @@
+{
+  "name": "donatepage",
+  "version": "1.0.0",
+  "description": "个人多合一收款网站，支持微信、支付宝、QQ钱包等多种方式。https://donate.techisle.top",
+  "homepage": "https://donate.techisle.top",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cubeyu/DonatePage"
+  },
+  "license": "NonCommercial-ShareAlike 1.0 Generic",
+  "author": "Cubeyu <cubeyu@aliyun.com>"
+}
