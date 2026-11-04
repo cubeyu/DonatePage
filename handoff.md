@@ -68,6 +68,7 @@
 9. **重写 modal 结构时必须保留 function.js 引用的全部 id**：`#showqrcode/#titleinfo/#currentqrcode/#qrcodeclose/#btncontainer/#h/#i/#pending/#depends/#toclick/#alipaybtn/#name/#description/#favicon`。V2 曾漏掉 `#titleinfo` 导致点击支付按钮抛错。
 10. **改源码一律走 Edit/Write 工具**——Mimosa hook 会拦截用 Bash（node -e / sed / 重定向等）直接写源文件，报"直接写源码/安全配置会绕过 Write/Edit 安全扫描"；这不是故障，换工具即可。
 11. **bundle 内联顺序**：function.main.js 现在是页面**最后**一个脚本（v2.3.3 移动），主交互内联脚本不依赖 jQuery 可先行；别再把 bundle 挪回主交互脚本之前，否则 LCP 和两个外部 fetch 又要等 45KB(gz) 下载 + jQuery 解析。
+12. **commit 门禁会拦 jQuery 压缩码误报**：Mimosa 的 git-gate hook 在 ZCode 里拦截 `git commit`，报 bundle 里 4 高危+8 中危（MongoDB 注入/command-injection/parseHTML XSS 等）——**全部是误报**（浏览器静态页无 MongoDB/命令执行概念，"URL 输入"实为硬编码收款码字符串，扫描器 verdictEffect 全为 none），且插件无误报裁定或排除 vendored 产物的配置口子。hook 只管 ZCode 的工具调用，管不到用户自己的终端——由用户在本地终端直接提交即可（2026-11-05 v2.3.3 即此情形）。
 
 ## 变更记录
 
