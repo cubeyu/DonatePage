@@ -1,6 +1,7 @@
 {
   "name": "donatepage",
-  "version": "1.0.0",
+  "version": "2.3.3",
+  "packageManager": "pnpm@11.22.0",
   "description": "个人多合一收款网站，支持微信、支付宝、QQ钱包等多种方式。https://donate.techisle.top",
   "homepage": "https://donate.techisle.top",
   "repository": {
@@ -8,26 +9,21 @@
     "url": "https://github.com/cubeyu/DonatePage"
   },
   "license": "GPL-3.0-or-later",
-  "author": "Cubeyu  <cubeyu@aliyun.com>",
+  "author": "Cubeyu <cubeyu@aliyun.com>",
   "scripts": {
-    "start": "npx http-server -o",
-    "build": "gulp default"
+    "start": "http-server -o",
+    "build": "gulp build"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-html-minifier-terser": "^7.0.0-beta.0",
-    "gulp-html-replace": "^1.6.2",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-rename": "^2.0.0",
-    "gulp-sass": "^6.0.1",
     "gulp-terser": "^2.1.0",
-    "gulp-uglify": "^3.0.2",
-    "sass": "^1.87.0"
-  },
-  "engines": {
-    "node": "18.x"
+    "http-server": "^14.1.1"
   },
   "dependencies": {
     "jquery": "^3.7.1"

@@ -1,0 +1,15 @@
+# 依赖
+node_modules/
+
+# 构建产物
+public/
+
+# 日志
+*.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地工具状态
+.mimosa/

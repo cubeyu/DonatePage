@@ -39,7 +39,6 @@ var english = /^[A-Za-z0-9]*$/; // "select" all English characters, numbers and 
 if (english.test(firstchar) || english.test(lastchar)) { // See if first or last character matches condition stated above
   var finalname = " " + myname + " "; // add spaces
   var finalsub = subtitle.replace(myname, finalname); // Replace name in subtitle
-  var spacing = true;
 }
 else {
   var finalname = myname; // if condition stated above is not matched, do nothing
@@ -64,24 +63,20 @@ if (multilingual === false) {
   var payto = "";
   var presshold = "长按识别二维码 向" + finalname + "支付";
   var notavail = "🚫 目前没有可用的支付方式"
-  var myname_hant = myname;
-  var myname_hans = myname;
-  var myname_eng = myname;
 }
 else {
   if (/zh-CN|zh-cn|zh-Hans|zh-hans|cn/i.test(userLang)) {
     // detect browser langauge, simplified chinese only
-    document.write("<style>body { font-family: -apple-system,BlinkMacSystemFont,Open Sans,Roboto,Oxygen,Cantarell,Fira Sans,Liberation Sans,Droid Sans,PingFang SC,HarmonyOS Sans SC,MiSans,Hiragino Sans GB,WenQuanYi Micro Hei,Noto Sans CJK SC,Noto Sans SC,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;}</style>");
+    // 字体统一由 style.css 管理，不再 document.write 注入
     if (usage === "payment") {
       var method = "付款";
     }
     if (usage === "donate") {
       var method = "捐赠";
     }
-    document.title = '向' + finalname + method + aftertitle;
-    var trans_wx = "微信"
+    document.title = "支持作者" + aftertitle;
     var trans_ali = "支付宝"
-    var finaltitle = "向" + finalname + method;
+    var finaltitle = "支持作者";
     var finalsub = "从下方选择" + method + "方式";
     var trans_wx = "微信";
     var scan = "扫一扫";
@@ -93,17 +88,17 @@ else {
   }
   else if (/zh-TW|zh-HK|zh-tw|zh-hk|zh-Hant|zh-hant|tw|hk/i.test(userLang)) {
     // detect browser langauge, traditional chinese only
-    document.write("<style>body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Hiragino Sans CNS', 'Microsoft JhengHei', 'Helvetica Neue', sans-serif; }</style>");
+    // 字体统一由 style.css 管理，不再 document.write 注入
     if (usage === "payment") {
       var method = "付款";
     }
     if (usage === "donate") {
       var method = "捐贈";
     }
-    document.title = '向' + finalname + method + aftertitle;
+    document.title = "支持作者" + aftertitle;
     var trans_wx = "WeChat "
     var trans_ali = "支付寶"
-    var finaltitle = "向" + finalname + method;
+    var finaltitle = "支持作者";
     var finalsub = "從下方選擇" + method + "方式";
     var scan = "掃一掃";
     var notavail = "🚫 目前沒有可用的" + method + "方式";
@@ -114,6 +109,7 @@ else {
   }
   else {
     // detect browser langauge, for non-Chinese users will display english
+    // 字体统一由 style.css 管理，不再 document.write 注入
     if (usage === "payment") {
       var method = "Pay";
       var method_t = "Payment"
@@ -122,15 +118,13 @@ else {
       var method = "Donate";
       var method_t = "Donation"
     }
-    var method_lc = method.charAt(0).toLowerCase();
-    document.title = method + ' to' + finalname_eng + aftertitle;
-    document.write("<style>body { font-family: sans-serif; }</style>"); // Oh I f**king love Segoe UI
+    document.title = "Support the Author" + aftertitle;
     var trans_wx = "WeChat"
     var trans_ali = "AliPay"
-    var finaltitle = method + " to" + finalname_eng;
+    var finaltitle = "Support the Author";
     var finalsub = "Select a " + method_t.replace(method_t.charAt(0), method_t.charAt(0).toLowerCase()) + " method from below";
-    var scanhint = "Scan the QR Code to " + method + finalname_eng;
-    var presshold = method.replace(method.charAt(5), "") + method.charAt(5).replace("e", "") + "ing to" + finalname_eng + ":<br><span style='font-weight:400'>Press and hold to recognise the QR Code</span>";
+    var method_ing = method === "Donate" ? "Donating" : "Paying";
+    var presshold = method_ing + " to" + finalname_eng + ":<br><span style='font-weight:400'>Press and hold to recognise the QR Code</span>";
     var scan = "Scan the QR Code with ";
     var payto = "";
     var notavail = "🚫 Currently no " + method_t.replace(method_t.charAt(0), method_t.charAt(0).toLowerCase()) + " method available";
@@ -150,32 +144,6 @@ if (typeof alipay === "undefined" || alipay === null || alipay === "") {
   document.getElementById("depends").removeChild(document.getElementById("alipaybtn"));
   error_num += 1;
   var noalipay = true;
-}
-if (typeof paypal === "undefined" || paypal === null || paypal === "") {
-  document.getElementById("depends").removeChild(document.getElementById("paypalbtn"));
-  error_num += 1;
-}
-else {
-  function openbox() {
-    selected = "yes";
-    function openpaypal(url, w, h) { // code from https://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen?answertab=votes#tab-top
-      var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : window.screenX;
-      var dualScreenTop = window.screenTop != undefined ? window.screenTop : window.screenY;
-      var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-      var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-      var systemZoom = width / window.screen.availWidth;
-      var left = (width - w) / 2 / systemZoom + dualScreenLeft
-      var top = (height - h) / 2 / systemZoom + dualScreenTop
-      var newWindow = window.open(url, "_blank", 'width=' + w / systemZoom + ', height=' + h / systemZoom + ', top=' + top + ', left=' + left);
-      if (window.focus) newWindow.focus();
-    }
-    if (window.innerHeight < window.innerWidth) {
-      openpaypal(paypal, window.innerWidth * 0.25, window.innerHeight * 0.9);
-    }
-    else {
-      openpaypal(paypal, window.innerWidth * 0.5, window.innerHeight * 0.9);
-    }
-  }
 }
 
 // General UserAgent verify rules
@@ -218,7 +186,7 @@ else {
 }
 // UserAgent Verify Part Ends
 
-if (error_num === 3) { // Show not available message to user if all four methods are not set up
+if (error_num === 2) { // Show not available message to user if both methods are not set up
   var finalsub = notavail;
   console.log("%c No Payment Method Available to Users ", "color: red");
 }
@@ -240,9 +208,6 @@ function removal() {
   document.getElementById("h").removeChild(document.getElementById("i")); // remove profile photo
   document.getElementById("pending").removeChild(document.getElementById("depends")); // remove buttons
   document.getElementById("btncontainer").removeChild(document.getElementById("qrcodeclose")); //remove exit buttons
-}
-function urlencode(String) { // Code from MKBlog - http://lab.mkblog.cn/oneqrcode/
-  return encodeURIComponent(String).replace(/'/g, "%27").replace(/"/g, "%22");
 }
 // Onclick Function Part Ends
 

@@ -1,152 +1,139 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title></title>
+    <title>支持作者 | Donate</title>
     <meta charset="utf-8">
+    <meta name="description" content="支持作者 cubeyu - 微信支付 / 支付宝。蓝图图纸风格的开源捐赠页。">
     <meta content="Cubeyu" name="author">
-    <meta content="initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-    <meta content="upgrade-insecure-requests" http-equiv="Content-Security-Policy">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/merger/0.28.6/bundles/style.main.css">
-    <link rel="preconnect" href="https://sdn.geekzu.org" crossorigin>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests">
+    <script>
+        // 防主题闪烁：在样式表加载前确定 data-theme（localStorage 优先，其次系统偏好，默认暗色）
+        (function () {
+            var t = "dark";
+            try {
+                t = localStorage.getItem("donate-theme") ||
+                    (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+            } catch (e) { /* localStorage 不可用时保持暗色 */ }
+            document.documentElement.setAttribute("data-theme", t);
+        })();
+    </script>
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
+    <link rel="preconnect" href="https://github-contributions-api.jogruber.de" crossorigin>
+    <link rel="stylesheet" href="assets/bundles/style.main.css">
     <link rel="shortcut icon" id="favicon" type="image/x-icon">
 </head>
 <body>
     <script>
         var myname = "麦希屿",
-            profile = "assets/images/placeholder.png",
+            profile = "assets/images/placeholder.webp",
             usage = "donate",
             wechat = "wxp://f2f04oJmM0v3ZQRHp_ci_LWhGAE1MGmnug9q70bIAGQmdeo",
             alipay = "https://qr.alipay.com/a6x11732pyuue0s59mdzp97",
-            paypal = "https://paypal.me/maixiyu?country.x=C2&locale.x=zh_XC",
-            tenpay = "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&f=wallet&a=1&u=3144855127&n=%E9%BA%A6%E5%B8%8C%E5%B1%BF&ac=CAEQ19zK2wsY0YOPwAYyGOiBiuWkqeWcuuaZr-e7j-iQpeaUtuasvjgBQiA0NmQ4NjI4OTZjNmFkY2RhYzlmZjZlZTBhYTRkNWU4NQ%3D%3D_xxx_sign",
             multilingual = true,
             myname_hans = myname,
             myname_hant = "麦希屿",
             myname_eng = "cubeyu",
             branding = true;
-        const tracking = false;
-        var title = "选择你的支付方式",
+        var title = "支持作者",
             subtitle = "跟随进一步的指示以向" + myname + "付款",
             gravatar_url = "https://sdn.geekzu.org/avatar/";
     </script>
-    <div class="main" id="h">
-        <a href="https://github.com/cubeyu" target="_blank" title="访问我的GitHub">
-            <i id="i"></i>
-        </a>
-        <div class="texts">
-            <h2 id="name"></h2>
-            <p id="description"></p>
+    <header class="topbar">
+        <span class="prompt">cubeyu@donate<span class="dim">:~$</span><span class="cursor" aria-hidden="true">▮</span></span>
+        <span class="topbar-actions">
+            <a class="star-badge" href="https://github.com/cubeyu/DonatePage" target="_blank" rel="noopener noreferrer" title="DonatePage 仓库星标" aria-label="DonatePage 的 GitHub 星标数">
+                <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                <span class="star-count mono" id="starCount">–</span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换黑夜 / 白天主题" title="切换主题">
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+        </span>
+    </header>
+    <main class="blueprint">
+        <aside class="margin-note note-left" aria-hidden="true">
+            <span class="handwritten">click the blocks<br>↖ they beep</span>
+        </aside>
+        <div class="sheet">
+            <section class="hero sector">
+                <p class="fig-label mono">Fig. 1 — isometric voxel headline</p>
+                <div id="voxel" class="voxel-wrap" title="click for a sound" role="img" aria-label="DONATE 像素积木标题"></div>
+                <p class="handwritten annotation-hero">follows your cursor, click for a sound</p>
+            </section>
+            <section class="profile sector" id="h">
+                <a href="https://github.com/cubeyu" target="_blank" rel="noopener noreferrer" title="访问我的GitHub" class="avatar-link">
+                    <i id="i"></i>
+                    <span class="avatar-note handwritten" aria-hidden="true">that's me ↗</span>
+                </a>
+                <div class="texts">
+                    <p class="profile-name mono">cubeyu <span class="verified" title="本人认证" aria-label="已认证">✓</span></p>
+                    <p class="profile-bio">开发者 · 开源爱好者 · 相信自由软件的力量</p>
+                    <p class="profile-chips">
+                        <span class="chip mono">#open-source</span>
+                        <span class="chip mono">#GPL-3.0</span>
+                        <span class="chip mono">#Shanxi</span>
+                    </p>
+                </div>
+                <div class="pay-group">
+                    <h2 id="name" class="pay-title"></h2>
+                    <div class="pay-buttons" id="pending">
+                        <p id="depends" class="paybtns">
+                            <a href="#showqrcode" class="btn-geek" id="toclick" onclick="openwechat()">
+                                <svg aria-hidden="true" class="icon"><use xlink:href="#icon-weixinzhifu"></use></svg>
+                                微信支付
+                            </a>
+                            <span class="btn-sep" aria-hidden="true"></span>
+                            <a href="#showqrcode" class="btn-geek" id="alipaybtn" onclick="openalipay()">
+                                <svg aria-hidden="true" class="icon"><use xlink:href="#icon-iconfontrectangle390"></use></svg>
+                                支付宝
+                            </a>
+                        </p>
+                        <p class="handwritten annotation-pay" aria-hidden="true">scan me →</p>
+                    </div>
+                </div>
+                <p id="description" hidden></p>
+            </section>
+            <section class="meta sector">
+                <p class="fig-label mono">Fig. 2 — who &amp; where</p>
+                <div class="meta-grid">
+                    <p class="meta-item mono">📍 Shanxi, China</p>
+                    <p class="meta-item mono"><span id="clock">--:--:--</span> <span class="dim">// Asia/Shanghai</span></p>
+                    <p class="meta-item swipe-item">
+                        <span class="dim mono" id="mailHint">📧 email:</span>
+                        <span class="swipe-track" id="swipeTrack">
+                            <span class="swipe-hint mono" id="swipeHint">slide to reveal →</span>
+                            <button class="swipe-knob mono" id="swipeKnob" type="button" aria-label="滑动解锁显示邮箱">→</button>
+                            <a class="swipe-addr mono" id="mailAddr" href="mailto:cubeyu@aliyun.com">cubeyu@aliyun.com</a>
+                        </span>
+                    </p>
+                </div>
+            </section>
+            <section class="heatmap sector">
+                <p class="fig-label mono">Fig. 3 — activity</p>
+                <div class="hm-scroll">
+                    <div class="hm-inner" id="hmInner">
+                        <div class="hm-months" id="hmMonths"></div>
+                        <div class="hm-weeks" id="hmWeeks"></div>
+                    </div>
+                </div>
+                <p class="hm-meta mono" id="hmMeta">loading contributions…</p>
+            </section>
+            <footer class="footer sector">
+                <p class="mono dim">© 2026 cubeyu // Shanxi, CN // GPL-3.0 // rendered with ♥ &amp; voxels</p>
+            </footer>
         </div>
-        <script>
-            if (profile_error = 0, /\bhttps?:\/\/\S+/i.test(profile)) profile_url = profile;
-            else if (/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(profile)) {
-                let e = 1 / window.devicePixelRatio * 500 * 1.25;
-                profile_size = e > 500 ? 500 : e < 200 ? 200 : 100 * Math.round(e / 100),
-                    function(e) {
-                        "use strict";
-                        function r(e, r) {
-                            var t = (65535 & e) + (65535 & r);
-                            return (e >> 16) + (r >> 16) + (t >> 16) << 16 | 65535 & t
-                        }
-                        function t(e, t, n, o, i, u) {
-                            return r((f = r(r(t, e), r(o, u))) << (l = i) | f >>> 32 - l, n);
-                            var f, l
-                        }
-                        function n(e, r, n, o, i, u, f) {
-                            return t(r & n | ~r & o, e, r, i, u, f)
-                        }
-                        function o(e, r, n, o, i, u, f) {
-                            return t(r & o | n & ~o, e, r, i, u, f)
-                        }
-                        function i(e, r, n, o, i, u, f) {
-                            return t(r ^ n ^ o, e, r, i, u, f)
-                        }
-                        function u(e, r, n, o, i, u, f) {
-                            return t(n ^ (r | ~o), e, r, i, u, f)
-                        }
-                        function f(e, t) {
-                            var f, l, c, a;
-                            e[t >> 5] |= 128 << t % 32,
-                                e[14 + (t + 64 >>> 9 << 4)] = t;
-                            for (var s = 1732584193, p = -271733879, d = -1732584194, h = 271733878, g = 0; g < e.length; g += 16) s = n(f = s, l = p, c = d, a = h, e[g], 7, -680876936), h = n(h, s, p, d, e[g + 1], 12, -389564586), d = n(d, h, s, p, e[g + 2], 17, 606105819), p = n(p, d, h, s, e[g + 3], 22, -1044525330), s = n(s, p, d, h, e[g + 4], 7, -176418897), h = n(h, s, p, d, e[g + 5], 12, 1200080426), d = n(d, h, s, p, e[g + 6], 17, -1473231341), p = n(p, d, h, s, e[g + 7], 22, -45705983), s = n(s, p, d, h, e[g + 8], 7, 1770035416), h = n(h, s, p, d, e[g + 9], 12, -1958414417), d = n(d, h, s, p, e[g + 10], 17, -42063), p = n(p, d, h, s, e[g + 11], 22, -1990404162), s = n(s, p, d, h, e[g + 12], 7, 1804603682), h = n(h, s, p, d, e[g + 13], 12, -40341101), d = n(d, h, s, p, e[g + 14], 17, -1502002290), s = o(s, p = n(p, d, h, s, e[g + 15], 22, 1236535329), d, h, e[g + 1], 5, -165796510), h = o(h, s, p, d, e[g + 6], 9, -1069501632), d = o(d, h, s, p, e[g + 11], 14, 643717713), p = o(p, d, h, s, e[g], 20, -373897302), s = o(s, p, d, h, e[g + 5], 5, -701558691), h = o(h, s, p, d, e[g + 10], 9, 38016083), d = o(d, h, s, p, e[g + 15], 14, -660478335), p = o(p, d, h, s, e[g + 4], 20, -405537848), s = o(s, p, d, h, e[g + 9], 5, 568446438), h = o(h, s, p, d, e[g + 14], 9, -1019803690), d = o(d, h, s, p, e[g + 3], 14, -187363961), p = o(p, d, h, s, e[g + 8], 20, 1163531501), s = o(s, p, d, h, e[g + 13], 5, -1444681467), h = o(h, s, p, d, e[g + 2], 9, -51403784), d = o(d, h, s, p, e[g + 7], 14, 1735328473), s = i(s, p = o(p, d, h, s, e[g + 12], 20, -1926607734), d, h, e[g + 5], 4, -378558), h = i(h, s, p, d, e[g + 8], 11, -2022574463), d = i(d, h, s, p, e[g + 11], 16, 1839030562), p = i(p, d, h, s, e[g + 14], 23, -35309556), s = i(s, p, d, h, e[g + 1], 4, -1530992060), h = i(h, s, p, d, e[g + 4], 11, 1272893353), d = i(d, h, s, p, e[g + 7], 16, -155497632), p = i(p, d, h, s, e[g + 10], 23, -1094730640), s = i(s, p, d, h, e[g + 13], 4, 681279174), h = i(h, s, p, d, e[g], 11, -358537222), d = i(d, h, s, p, e[g + 3], 16, -722521979), p = i(p, d, h, s, e[g + 6], 23, 76029189), s = i(s, p, d, h, e[g + 9], 4, -640364487), h = i(h, s, p, d, e[g + 12], 11, -421815835), d = i(d, h, s, p, e[g + 15], 16, 530742520), s = u(s, p = i(p, d, h, s, e[g + 2], 23, -995338651), d, h, e[g], 6, -198630844), h = u(h, s, p, d, e[g + 7], 10, 1126891415), d = u(d, h, s, p, e[g + 14], 15, -1416354905), p = u(p, d, h, s, e[g + 5], 21, -57434055), s = u(s, p, d, h, e[g + 12], 6, 1700485571), h = u(h, s, p, d, e[g + 3], 10, -1894986606), d = u(d, h, s, p, e[g + 10], 15, -1051523), p = u(p, d, h, s, e[g + 1], 21, -2054922799), s = u(s, p, d, h, e[g + 8], 6, 1873313359), h = u(h, s, p, d, e[g + 15], 10, -30611744), d = u(d, h, s, p, e[g + 6], 15, -1560198380), p = u(p, d, h, s, e[g + 13], 21, 1309151649), s = u(s, p, d, h, e[g + 4], 6, -145523070), h = u(h, s, p, d, e[g + 11], 10, -1120210379), d = u(d, h, s, p, e[g + 2], 15, 718787259), p = u(p, d, h, s, e[g + 9], 21, -343485551), s = r(s, f), p = r(p, l), d = r(d, c), h = r(h, a);
-                            return [s, p, d, h]
-                        }
-                        function l(e) {
-                            for (var r = "", t = 32 * e.length, n = 0; n < t; n += 8) r += String.fromCharCode(e[n >> 5] >>> n % 32 & 255);
-                            return r
-                        }
-                        function c(e) {
-                            var r = [];
-                            for (r[(e.length >> 2) - 1] = void 0, n = 0; n < r.length; n += 1) r[n] = 0;
-                            for (var t = 8 * e.length, n = 0; n < t; n += 8) r[n >> 5] |= (255 & e.charCodeAt(n / 8)) << n % 32;
-                            return r
-                        }
-                        function a(e) {
-                            for (var r, t = "0123456789abcdef", n = "", o = 0; o < e.length; o += 1) r = e.charCodeAt(o), n += t.charAt(r >>> 4 & 15) + t.charAt(15 & r);
-                            return n
-                        }
-                        function s(e) {
-                            return unescape(encodeURIComponent(e))
-                        }
-                        function p(e) {
-                            return l(f(c(r = s(e)), 8 * r.length));
-                            var r
-                        }
-                        function d(e, r) {
-                            return function(e, r) {
-                                var t, n, o = c(e), i = [], u = [];
-                                for (i[15] = u[15] = void 0, 16 < o.length && (o = f(o, 8 * e.length)), t = 0; t < 16; t += 1) i[t] = 909522486 ^ o[t], u[t] = 1549556828 ^ o[t];
-                                return n = f(i.concat(c(r)), 512 + 8 * r.length), l(f(u.concat(n), 640))
-                            }(s(e), s(r))
-                        }
-                        function h(e, r, t) {
-                            return r ? t ? d(r, e) : a(d(r, e)) : t ? p(e) : a(p(e))
-                        }
-                        "function" == typeof define && define.amd ? define((function() {
-                            return h
-                        })) : "object" == typeof module && module.exports ? module.exports = h : e.md5 = h
-                    }(this);
-                var profile_url = gravatar_url + md5(profile) + "?s=" + profile_size
-            } else profile_url = profile.startsWith("assets/") || profile.startsWith("/assets/") ? profile : "assets/images/placeholder.png";
-            document.getElementById("i").style.background = "url('" + profile_url + "') no-repeat center/cover"
-        </script>
-        <div class="buttons" id="pending">
-            <p id="depends" class="middlebtn">
-                <a href="#showqrcode" class="btn btn-primary" id="toclick" onclick="openwechat()">
-                    <svg aria-hidden="true" class="icon">
-                        <use xlink:href="#icon-weixinzhifu"></use>
-                    </svg>
-                    微信支付
-                </a>
-                <span></span>
-                <a href="#showqrcode" class="btn btn-primary" id="alipaybtn" onclick="openalipay()">
-                    <svg aria-hidden="true" class="icon">
-                        <use xlink:href="#icon-iconfontrectangle390"></use>
-                    </svg>
-                    支付宝
-                </a>
-                <span></span>
-                <a href="#showqrcode" class="btn btn-primary" id="tenpaybtn" onclick="opentenpay()">
-                    <svg aria-hidden="true" class="icon">
-                        <use xlink:href="#icon-tenpay"></use>
-                    </svg>
-                    QQ钱包
-                </a>
-                <span></span>
-                <button class="btn btn-primary" id="paypalbtn" onclick="openbox()">
-                    <svg aria-hidden="true" class="icon paypal-wide">
-                        <use xlink:href="#icon-paypal"></use>
-                    </svg>
-                </button>
-            </p>
-        </div>
-    </div>
+        <aside class="margin-note note-right" aria-hidden="true">
+            <span class="handwritten">every cent feeds<br>the caffeine fund ↗</span>
+        </aside>
+    </main>
     <div class="modal" id="showqrcode">
-        <div class="modal-container" role="document">
+        <div class="modal-container" role="document" aria-modal="true">
             <div class="modal-header" id="btncontainer">
-                <a href="#" class="btn btn-clear float-right" id="qrcodeclose" aria-label="Close"></a>
-                <div class="h5 modal-title" id="titleinfo" style="text-align:center"></div>
+                <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="term-title mono" id="titleinfo">qrcode --render</span>
+                <a href="#" class="btn-clear" id="qrcodeclose" aria-label="关闭"></a>
             </div>
             <div class="modal-body">
                 <div class="content" id="qrcontainer">
@@ -155,32 +142,311 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lrsjng.jquery-qrcode/0.18.0/jquery-qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/merger/0.28.6/bundles/function.main.js"></script>
-    <script src="assets/bundles/function.main.js"></script>
     <script>
-        function opentenpay() {
-            selected = "yes",
-            document.getElementById("titleinfo").innerHTML = "手机QQ扫一扫 投喂麦希屿",
-            client = tenpay,
-            showqrcode()
-        }
-        window._iconfont_svg_string_tenpay = '<svg><symbol id="icon-tenpay" viewBox="0 0 1024 1024"><path d="M868.448 499.2c-1.664-101.504-73.216-179.264-175.36-204.032l0-0.192L346.976 295.04 347.072 294.976C245.952 282.432 175.68 359.36 175.68 459.072l0 106.752c0 36.16 9.472 70.528 28.032 101.056 2.624 4.352 5.44 8.576 8.32 12.736 5.888 8.448 12.16 16.576 18.944 24.32l2.944 3.264c0.448 0.512 0.832 1.088 1.216 1.6 1.088 1.28 2.112 2.496 3.2 3.712 25.216 28.032 56.64 50.24 92.096 65.152 5.184 2.24 10.496 4.224 15.936 6.016 0.064 0 0.064 0.064 0.128 0.064 19.712 6.592 40.704 11.008 62.656 12.992 2.752 0.192 5.44 0.384 8.192 0.576 9.216 0.512 18.496 0.832 27.904 0.704l347.328 0.064c0.32 0 0.704 0 0.96 0 101.632 0 184.832-76.928 185.984-176.96L868.352 513.28C868.736 508.672 868.576 503.936 868.448 499.2zM534.272 725.056c-31.104 0-56.32-25.408-56.32-56.768 0-31.296 25.216-56.768 56.32-56.768 31.168 0 56.384 25.472 56.384 56.768C590.656 699.712 565.44 725.056 534.272 725.056zM640.832 461.632c-17.28 0-31.296-14.144-31.296-31.488 0-17.408 14.016-31.552 31.296-31.552 17.28 0 31.36 14.144 31.36 31.552C672.192 447.488 658.112 461.632 640.832 461.632zM427.712 461.632c-17.344 0-31.36-14.144-31.36-31.488 0-17.408 14.016-31.552 31.36-31.552 17.344 0 31.296 14.144 31.296 31.552C459.072 447.488 445.056 461.632 427.712 461.632z" /></symbol></svg>';
-        
-        (function() {
-            var e = document.querySelector("svg");
-            if (e) {
-                var t = document.createElement("div");
-                t.innerHTML = window._iconfont_svg_string_tenpay;
-                var n = t.querySelector("symbol");
-                e.appendChild(n);
-            } else {
-                var t = document.createElement("div");
-                t.innerHTML = window._iconfont_svg_string_tenpay;
-                document.body.appendChild(t.firstChild);
+        // 头像来源判定：URL 直接用 / 邮箱走 Gravatar(md5) / 其余回退本地占位图
+        if (/\bhttps?:\/\/\S+/i.test(profile)) profile_url = profile;
+        else if (/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(profile)) {
+            let e = 1 / window.devicePixelRatio * 500 * 1.25;
+            profile_size = e > 500 ? 500 : e < 200 ? 200 : 100 * Math.round(e / 100),
+                function(e) {
+                    "use strict";
+                    function r(e, r) {
+                        var t = (65535 & e) + (65535 & r);
+                        return (e >> 16) + (r >> 16) + (t >> 16) << 16 | 65535 & t
+                    }
+                    function t(e, t, n, o, i, u) {
+                        return r((f = r(r(t, e), r(o, u))) << (l = i) | f >>> 32 - l, n);
+                        var f, l
+                    }
+                    function n(e, r, n, o, i, u, f) {
+                        return t(r & n | ~r & o, e, r, i, u, f)
+                    }
+                    function o(e, r, n, o, i, u, f) {
+                        return t(r & o | n & ~o, e, r, i, u, f)
+                    }
+                    function i(e, r, n, o, i, u, f) {
+                        return t(r ^ n ^ o, e, r, i, u, f)
+                    }
+                    function u(e, r, n, o, i, u, f) {
+                        return t(n ^ (r | ~o), e, r, i, u, f)
+                    }
+                    function f(e, t) {
+                        var f, l, c, a;
+                        e[t >> 5] |= 128 << t % 32,
+                            e[14 + (t + 64 >>> 9 << 4)] = t;
+                        for (var s = 1732584193, p = -271733879, d = -1732584194, h = 271733878, g = 0; g < e.length; g += 16) s = n(f = s, l = p, c = d, a = h, e[g], 7, -680876936), h = n(h, s, p, d, e[g + 1], 12, -389564586), d = n(d, h, s, p, e[g + 2], 17, 606105819), p = n(p, d, h, s, e[g + 3], 22, -1044525330), s = n(s, p, d, h, e[g + 4], 7, -176418897), h = n(h, s, p, d, e[g + 5], 12, 1200080426), d = n(d, h, s, p, e[g + 6], 17, -1473231341), p = n(p, d, h, s, e[g + 7], 22, -45705983), s = n(s, p, d, h, e[g + 8], 7, 1770035416), h = n(h, s, p, d, e[g + 9], 12, -1958414417), d = n(d, h, s, p, e[g + 10], 17, -42063), p = n(p, d, h, s, e[g + 11], 22, -1990404162), s = n(s, p, d, h, e[g + 12], 7, 1804603682), h = n(h, s, p, d, e[g + 13], 12, -40341101), d = n(d, h, s, p, e[g + 14], 17, -1502002290), s = o(s, p = n(p, d, h, s, e[g + 15], 22, 1236535329), d, h, e[g + 1], 5, -165796510), h = o(h, s, p, d, e[g + 6], 9, -1069501632), d = o(d, h, s, p, e[g + 11], 14, 643717713), p = o(p, d, h, s, e[g], 20, -373897302), s = o(s, p, d, h, e[g + 5], 5, -701558691), h = o(h, s, p, d, e[g + 10], 9, 38016083), d = o(d, h, s, p, e[g + 15], 14, -660478335), p = o(p, d, h, s, e[g + 4], 20, -405537848), s = o(s, p, d, h, e[g + 9], 5, 568446438), h = o(h, s, p, d, e[g + 14], 9, -1019803690), d = o(d, h, s, p, e[g + 3], 14, -187363961), p = o(p, d, h, s, e[g + 8], 20, 1163531501), s = o(s, p, d, h, e[g + 13], 5, -1444681467), h = o(h, s, p, d, e[g + 2], 9, -51403784), d = o(d, h, s, p, e[g + 7], 14, 1735328473), s = i(s, p = o(p, d, h, s, e[g + 12], 20, -1926607734), d, h, e[g + 5], 4, -378558), h = i(h, s, p, d, e[g + 8], 11, -2022574463), d = i(d, h, s, p, e[g + 11], 16, 1839030562), p = i(p, d, h, s, e[g + 14], 23, -35309556), s = i(s, p, d, h, e[g + 1], 4, -1530992060), h = i(h, s, p, d, e[g + 4], 11, 1272893353), d = i(d, h, s, p, e[g + 7], 16, -155497632), p = i(p, d, h, s, e[g + 10], 23, -1094730640), s = i(s, p, d, h, e[g + 13], 4, 681279174), h = i(h, s, p, d, e[g], 11, -358537222), d = i(d, h, s, p, e[g + 3], 16, -722521979), p = i(p, d, h, s, e[g + 6], 23, 76029189), s = i(s, p, d, h, e[g + 9], 4, -640364487), h = i(h, s, p, d, e[g + 12], 11, -421815835), d = i(d, h, s, p, e[g + 15], 16, 530742520), s = u(s, p = i(p, d, h, s, e[g + 2], 23, -995338651), d, h, e[g], 6, -198630844), h = u(h, s, p, d, e[g + 7], 10, 1126891415), d = u(d, h, s, p, e[g + 14], 15, -1416354905), p = u(p, d, h, s, e[g + 5], 21, -57434055), s = u(s, p, d, h, e[g + 12], 6, 1700485571), h = u(h, s, p, d, e[g + 3], 10, -1894986606), d = u(d, h, s, p, e[g + 10], 15, -1051523), p = u(p, d, h, s, e[g + 1], 21, -2054922799), s = u(s, p, d, h, e[g + 8], 6, 1873313359), h = u(h, s, p, d, e[g + 15], 10, -30611744), d = u(d, h, s, p, e[g + 6], 15, -1560198380), p = u(p, d, h, s, e[g + 13], 21, 1309151649), s = u(s, p, d, h, e[g + 4], 6, -145523070), h = u(h, s, p, d, e[g + 11], 10, -1120210379), d = u(d, h, s, p, e[g + 2], 15, 718787259), p = u(p, d, h, s, e[g + 9], 21, -343485551), s = r(s, f), p = r(p, l), d = r(d, c), h = r(h, a);
+                        return [s, p, d, h]
+                    }
+                    function l(e) {
+                        for (var r = "", t = 32 * e.length, n = 0; n < t; n += 8) r += String.fromCharCode(e[n >> 5] >>> n % 32 & 255);
+                        return r
+                    }
+                    function c(e) {
+                        var r = [];
+                        for (r[(e.length >> 2) - 1] = void 0, n = 0; n < r.length; n += 1) r[n] = 0;
+                        for (var t = 8 * e.length, n = 0; n < t; n += 8) r[n >> 5] |= (255 & e.charCodeAt(n / 8)) << n % 32;
+                        return r
+                    }
+                    function a(e) {
+                        for (var r, t = "0123456789abcdef", n = "", o = 0; o < e.length; o += 1) r = e.charCodeAt(o), n += t.charAt(r >>> 4 & 15) + t.charAt(15 & r);
+                        return n
+                    }
+                    function s(e) {
+                        return unescape(encodeURIComponent(e))
+                    }
+                    function p(e) {
+                        return l(f(c(r = s(e)), 8 * r.length));
+                        var r
+                    }
+                    function d(e, r) {
+                        return function(e, r) {
+                            var t, n, o = c(e), i = [], u = [];
+                            for (i[15] = u[15] = void 0, 16 < o.length && (o = f(o, 8 * e.length)), t = 0; t < 16; t += 1) i[t] = 909522486 ^ o[t], u[t] = 1549556828 ^ o[t];
+                            return n = f(i.concat(c(r)), 512 + 8 * r.length), l(f(u.concat(n), 640))
+                        }(s(e), s(r))
+                    }
+                    function h(e, r, t) {
+                        return r ? t ? d(r, e) : a(d(r, e)) : t ? p(e) : a(p(e))
+                    }
+                    "function" == typeof define && define.amd ? define((function() {
+                        return h
+                    })) : "object" == typeof module && module.exports ? module.exports = h : e.md5 = h
+                }(this);
+            var profile_url = gravatar_url + md5(profile) + "?s=" + profile_size
+        } else profile_url = profile.startsWith("assets/") || profile.startsWith("/assets/") ? profile : "assets/images/placeholder.webp";
+        document.getElementById("i").style.background = "url('" + profile_url + "') no-repeat center/cover"
+    </script>
+    <script>
+        // ===== 蓝图交互脚本：等距像素标题 / 实时时钟 / 滑动解锁邮箱 =====
+        (function () {
+            "use strict";
+
+            // --- Fig.1 等距像素积木标题 "DONATE"（SVG 动态生成） ---
+            var GLYPHS = {
+                D: ["11110", "10001", "10001", "10001", "11110"],
+                O: ["01110", "10001", "10001", "10001", "01110"],
+                N: ["10001", "11001", "10101", "10011", "10001"],
+                A: ["01110", "10001", "11111", "10001", "10001"],
+                T: ["11111", "00100", "00100", "00100", "00100"],
+                E: ["11111", "10000", "11110", "10000", "11111"]
+            };
+            var WORD = "DONATE";
+            var BW = 20, BH = 24, TOP = 8, GAP = 1, COLS = WORD.length * 5 + (WORD.length - 1) * GAP;
+            var ns = "http://www.w3.org/2000/svg";
+            var svg = document.createElementNS(ns, "svg");
+            svg.setAttribute("viewBox", "0 0 " + (COLS * BW + 20) + " " + (5 * BH + TOP + 16));
+            svg.setAttribute("class", "voxel-svg");
+            // 等距立方体：顶面受光、左面最暗、右面居中（zinc 灰阶）
+            var FACES = [
+                { pts: [[10, 0], [20, TOP], [10, TOP * 2], [0, TOP]], fill: "#525252" },
+                { pts: [[0, TOP], [10, TOP * 2], [10, TOP * 2 + BH], [0, TOP + BH]], fill: "#1c1c1c" },
+                { pts: [[10, TOP * 2], [20, TOP], [20, TOP + BH], [10, TOP * 2 + BH]], fill: "#2c2c2c" }
+            ];
+            for (var li = 0; li < WORD.length; li++) {
+                var rows = GLYPHS[WORD[li]];
+                for (var r = 0; r < 5; r++) {
+                    for (var c = 0; c < 5; c++) {
+                        if (rows[r][c] !== "1") continue;
+                        var ox = (li * (5 + GAP) + c) * BW + 10;
+                        var oy = r * BH + 8;
+                        for (var fi = 0; fi < FACES.length; fi++) {
+                            var poly = document.createElementNS(ns, "polygon");
+                            var pts = FACES[fi].pts.map(function (p) { return (ox + p[0]) + "," + (oy + p[1]); }).join(" ");
+                            poly.setAttribute("points", pts);
+                            poly.setAttribute("fill", FACES[fi].fill);
+                            poly.setAttribute("stroke", "#0d0d0d");
+                            poly.setAttribute("stroke-width", "1");
+                            svg.appendChild(poly);
+                        }
+                    }
+                }
             }
+            var voxelHost = document.getElementById("voxel");
+            voxelHost.appendChild(svg);
+
+            // 视差跟随鼠标
+            document.addEventListener("mousemove", function (e) {
+                var dx = (e.clientX / window.innerWidth - 0.5) * 12;
+                var dy = (e.clientY / window.innerHeight - 0.5) * 8;
+                voxelHost.style.transform = "translate(" + dx + "px," + dy + "px)";
+            }, { passive: true });
+
+            // 点击音效（WebAudio 短促方波，需用户手势触发）
+            voxelHost.addEventListener("click", function () {
+                try {
+                    var ctx = voxelHost._actx || (voxelHost._actx = new (window.AudioContext || window.webkitAudioContext)());
+                    var osc = ctx.createOscillator(), gain = ctx.createGain();
+                    osc.type = "square";
+                    osc.frequency.setValueAtTime(880, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+                    osc.connect(gain).connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                } catch (err) { /* 音频不可用时静默忽略 */ }
+            });
+
+            // --- 实时时钟（Asia/Shanghai） ---
+            var clockEl = document.getElementById("clock");
+            function tick() {
+                try {
+                    clockEl.textContent = new Date().toLocaleTimeString("en-US", {
+                        timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+                    });
+                } catch (err) {
+                    clockEl.textContent = new Date().toTimeString().slice(0, 8);
+                }
+            }
+            tick();
+            setInterval(tick, 1000);
+
+            // --- 滑动解锁邮箱（拖动滑块到右侧展开，支持键盘/点击回退） ---
+            var track = document.getElementById("swipeTrack");
+            var knob = document.getElementById("swipeKnob");
+            var hint = document.getElementById("swipeHint");
+            var mailHint = document.getElementById("mailHint");
+            var addr = document.getElementById("mailAddr");
+            var opened = false;
+
+            function openMail() {
+                if (opened) return;
+                opened = true;
+                track.classList.add("open");
+                knob.style.left = "";
+                hint.style.display = "none";
+                mailHint.textContent = "📧 email:";
+                knob.setAttribute("aria-hidden", "true");
+                knob.tabIndex = -1;
+            }
+            // 键盘/点击回退：按钮或轨道点击直接展开（无障碍）
+            knob.addEventListener("click", openMail);
+            track.addEventListener("click", function (e) {
+                if (e.target === knob) return;
+                openMail();
+            });
+            // 拖动展开
+            var dragging = false;
+            knob.addEventListener("pointerdown", function (e) {
+                if (opened) return;
+                dragging = true;
+                knob.setPointerCapture(e.pointerId);
+                e.preventDefault();
+            });
+            knob.addEventListener("pointermove", function (e) {
+                if (!dragging) return;
+                var rect = track.getBoundingClientRect();
+                var max = rect.width - knob.offsetWidth;
+                var x = Math.min(Math.max(e.clientX - rect.left - knob.offsetWidth / 2, 0), max);
+                knob.style.left = x + "px";
+                if (max > 0 && x / max > 0.85) {
+                    dragging = false;
+                    openMail();
+                }
+            });
+            knob.addEventListener("pointerup", function () {
+                if (!dragging) return;
+                dragging = false;
+                if (!opened) knob.style.left = "0px"; // 未达阈值弹回
+            });
+
+            // --- 主题切换（黑夜/白天，跟随系统偏好，手动切换写入 localStorage） ---
+            var themeToggle = document.getElementById("themeToggle");
+            themeToggle.addEventListener("click", function () {
+                var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+                document.documentElement.setAttribute("data-theme", next);
+                try { localStorage.setItem("donate-theme", next); } catch (e) { /* 忽略存储失败 */ }
+            });
+
+            // --- GitHub 星标数（DonatePage 仓库徽标） ---
+            (function () {
+                var el = document.getElementById("starCount");
+                var api = "https://api.github.com/repos/cubeyu/DonatePage";
+                // 仅接受 https 协议与预期 host 的响应（防异常环境下的请求劫持）
+                if (!/^https:\/\/api\.github\.com\//.test(api)) return;
+                fetch(api, { headers: { "Accept": "application/vnd.github+json" } })
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (d) {
+                        if (d && typeof d.stargazers_count === "number") el.textContent = d.stargazers_count;
+                        else el.textContent = "★";
+                    })
+                    .catch(function () { el.textContent = "★"; });
+            })();
+
+            // --- Fig.3 GitHub 贡献热力图（灰度阶梯，数据源 jogruber 公共 API，失败时降级） ---
+            (function () {
+                var GH_USER = "cubeyu";
+                var api = "https://github-contributions-api.jogruber.de/v4/" + GH_USER + "?y=last";
+                var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                var WEEKS = 53;
+
+                function pad(n) { return n < 10 ? "0" + n : String(n); }
+                function fmt(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+
+                function render(data) {
+                    var byDate = {};
+                    var total = 0;
+                    (data.contributions || []).forEach(function (c) {
+                        byDate[c.date] = c;
+                        total += c.count || 0;
+                    });
+                    var today = new Date();
+                    // 本周周日为最后一列的列首
+                    var weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+                    var monthsHost = document.getElementById("hmMonths");
+                    var weeksHost = document.getElementById("hmWeeks");
+                    var lastMonth = -1;
+                    var frag = document.createDocumentFragment();
+                    for (var w = WEEKS - 1; w >= 0; w--) {
+                        var colStart = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() - w * 7);
+                        // 月份标签：列首所在月与上一列不同时标注
+                        var mLabel = document.createElement("span");
+                        if (colStart.getMonth() !== lastMonth && colStart.getDate() <= 7) {
+                            lastMonth = colStart.getMonth();
+                            mLabel.textContent = MONTHS[lastMonth];
+                        }
+                        monthsHost.appendChild(mLabel);
+                        // 一列 7 格（周日 → 周六）
+                        var col = document.createElement("span");
+                        col.className = "hm-col";
+                        for (var d = 0; d < 7; d++) {
+                            var day = new Date(colStart.getFullYear(), colStart.getMonth(), colStart.getDate() + d);
+                            var cell = document.createElement("i");
+                            cell.className = "hm-cell";
+                            if (day > today) {
+                                cell.className += " hm-future"; // 未来的格子留空
+                            } else {
+                                var c = byDate[fmt(day)];
+                                var count = c ? (c.count || 0) : 0;
+                                var level = c ? (c.level || 0) : 0;
+                                cell.setAttribute("data-level", Math.min(level, 4));
+                                cell.setAttribute("data-tip", fmt(day) + " · " + count + " contribution" + (count === 1 ? "" : "s"));
+                            }
+                            col.appendChild(cell);
+                        }
+                        frag.appendChild(col);
+                    }
+                    weeksHost.appendChild(frag);
+                    document.getElementById("hmMeta").innerHTML =
+                        total.toLocaleString("en-US") + " contributions in the last year. Source: GitHub. " +
+                        '<span class="hm-legend">Less <i class="hm-cell" data-level="0"></i><i class="hm-cell" data-level="1"></i><i class="hm-cell" data-level="2"></i><i class="hm-cell" data-level="3"></i><i class="hm-cell" data-level="4"></i> More</span>';
+                }
+
+                function fallback() {
+                    document.getElementById("hmInner").style.display = "none";
+                    document.getElementById("hmMeta").innerHTML =
+                        'contributions unavailable — <a class="hm-link" href="https://github.com/' + GH_USER + '" target="_blank" rel="noopener noreferrer">view on GitHub ↗</a>';
+                }
+
+                if (!/^https:\/\/github-contributions-api\.jogruber\.de\//.test(api)) { fallback(); return; }
+                fetch(api)
+                    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                    .then(render)
+                    .catch(fallback);
+            })();
         })();
     </script>
+    <!-- bundle 放最后：上面的内联脚本不依赖 jQuery，先执行可让 LCP（DONATE 标题）与外部请求不被 128KB 打包文件拖慢 -->
+    <script src="assets/bundles/function.main.js"></script>
 </body>
 </html>
