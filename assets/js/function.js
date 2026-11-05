@@ -11,7 +11,7 @@ var client;
 var selected;
 var scale = window.devicePixelRatio; // Change scale to 1 on retina screens to see blurry canvas
 
-$("#favicon").attr("href", profile_url); // Set page icon
+// 站点图标固定为小猫咪 favicon（assets/images/favicon.svg），不再用头像覆盖
 
 var userLang = navigator.language || navigator.userLanguage;
 if (multilingual !== false) {

@@ -84,11 +84,13 @@ gulp.task('minify-html', function () {
 
 // 复制运行时所需的静态资源（打包产物与图片）到 public/
 // 只复制 bundles 与 images，不携带 js/styles 源文件
+// encoding: false 让 vinyl 以 Buffer 原样传输二进制（webp/图片），
+// 否则 gulp 5 默认按 utf8 解码文本，会把 webp 重新编码导致体积膨胀
 gulp.task('copy-assets', function () {
   return gulp.src([
       './assets/bundles/**/*',
       './assets/images/**/*'
-    ], { base: './' })
+    ], { base: './', encoding: false })
     .pipe(gulp.dest('./public/'));
 });
 

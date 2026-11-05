@@ -21,12 +21,13 @@
     <link rel="preconnect" href="https://api.github.com" crossorigin>
     <link rel="preconnect" href="https://github-contributions-api.jogruber.de" crossorigin>
     <link rel="stylesheet" href="assets/bundles/style.main.css">
-    <link rel="shortcut icon" id="favicon" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" id="favicon" href="assets/images/favicon.svg" type="image/svg+xml">
 </head>
 <body>
     <script>
         var myname = "麦希屿",
-            profile = "assets/images/placeholder.webp",
+            profile = "assets/images/avatar.webp",
             usage = "donate",
             wechat = "wxp://f2f04oJmM0v3ZQRHp_ci_LWhGAE1MGmnug9q70bIAGQmdeo",
             alipay = "https://qr.alipay.com/a6x11732pyuue0s59mdzp97",
@@ -362,15 +363,44 @@
             (function () {
                 var el = document.getElementById("starCount");
                 var api = "https://api.github.com/repos/cubeyu/DonatePage";
-                // 仅接受 https 协议与预期 host 的响应（防异常环境下的请求劫持）
+
+                // 静态兜底：GitHub 匿名 API 限额 60 次/小时且按 IP 共享，
+                // 运营商 NAT 出口常被他人耗尽额度（403 rate limit exceeded）。
+                // 此时展示已知星标数，避免徽标空着或变成 ★。每次成功请求会覆盖它。
+                var FALLBACK_STARS = 2;
+
                 if (!/^https:\/\/api\.github\.com\//.test(api)) return;
+
+                var done = false;
+                function settle(value, tip) {
+                    if (done) return;
+                    done = true;
+                    el.textContent = value;
+                    el.title = tip;
+                }
+                // fetch 挂起（DNS/网络受限）时 5 秒后展示兜底值
+                var timer = setTimeout(function () {
+                    settle(FALLBACK_STARS, FALLBACK_STARS + " 个星标（API 限流时的兜底值）");
+                }, 5000);
+
                 fetch(api, { headers: { "Accept": "application/vnd.github+json" } })
-                    .then(function (r) { return r.ok ? r.json() : null; })
-                    .then(function (d) {
-                        if (d && typeof d.stargazers_count === "number") el.textContent = d.stargazers_count;
-                        else el.textContent = "★";
+                    .then(function (r) {
+                        // 403/429 为限流：静默降级到兜底值，不当作错误
+                        if (r.ok) return r.json();
+                        return null;
                     })
-                    .catch(function () { el.textContent = "★"; });
+                    .then(function (d) {
+                        clearTimeout(timer);
+                        if (d && typeof d.stargazers_count === "number") {
+                            settle(d.stargazers_count, d.stargazers_count + " 个星标");
+                        } else {
+                            settle(FALLBACK_STARS, FALLBACK_STARS + " 个星标（API 限流时的兜底值）");
+                        }
+                    })
+                    .catch(function () {
+                        clearTimeout(timer);
+                        settle(FALLBACK_STARS, FALLBACK_STARS + " 个星标（API 限流时的兜底值）");
+                    });
             })();
 
             // --- Fig.3 GitHub 贡献热力图（灰度阶梯，数据源 jogruber 公共 API，失败时降级） ---
@@ -439,10 +469,25 @@
                 }
 
                 if (!/^https:\/\/github-contributions-api\.jogruber\.de\//.test(api)) { fallback(); return; }
+                // DNS/网络受限时 fetch 可能长期挂起，8 秒后降级为 GitHub 链接
+                var settled = false;
+                var hmTimer = setTimeout(function () {
+                    if (!settled) { settled = true; fallback(); }
+                }, 8000);
                 fetch(api)
                     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-                    .then(render)
-                    .catch(fallback);
+                    .then(function (d) {
+                        if (settled) return;
+                        settled = true;
+                        clearTimeout(hmTimer);
+                        render(d);
+                    })
+                    .catch(function () {
+                        if (settled) return;
+                        settled = true;
+                        clearTimeout(hmTimer);
+                        fallback();
+                    });
             })();
         })();
     </script>

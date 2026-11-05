@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#0d0d0d"/>
+  <!-- 猫头轮廓：两只三角耳 + 圆脸 -->
+  <path d="M7 12 L6 4 L12 8.5 A10.5 10.5 0 0 1 20 8.5 L26 4 L25 12 A10.5 10.5 0 1 1 7 12 Z"
+        fill="#e8e6e3" stroke="#0d0d0d" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- 眼睛：方块状像素眼，呼应页面等距体素风格 -->
+  <rect x="11" y="15" width="3.2" height="4" rx="0.6" fill="#0d0d0d"/>
+  <rect x="18" y="15" width="3.2" height="4" rx="0.6" fill="#0d0d0d"/>
+  <!-- 鼻子 -->
+  <path d="M15.4 21 L16.6 21 L16 22.1 Z" fill="#0d0d0d"/>
+  <!-- 胡须 -->
+  <path d="M6.5 19.5 L10 20.4 M6.5 22 L10 22 M25.5 19.5 L22 20.4 M25.5 22 L22 22"
+        stroke="#0d0d0d" stroke-width="0.9" stroke-linecap="round"/>
+</svg>

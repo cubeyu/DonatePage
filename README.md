@@ -93,7 +93,7 @@ pnpm start
 
 ```js
 var myname = "你的名字",
-    profile = "assets/images/placeholder.webp",   // 头像：URL / 邮箱(Gravatar) / 本地路径
+    profile = "assets/images/avatar.webp",        // 头像：URL / 邮箱(Gravatar) / 本地路径
     wechat  = "wxp://...",                        // 微信收款码链接
     alipay  = "https://qr.alipay.com/...";        // 支付宝收款码链接
 ```

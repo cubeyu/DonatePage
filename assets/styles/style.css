@@ -135,20 +135,22 @@ a { color: inherit; }
   align-items: flex-start; /* 右侧捐赠组与头像同一水平线起排 */
 }
 .avatar-link {
-  flex: 0 0 120px;
+  flex: 0 0 132px;
   display: block;
   text-align: center;
 }
 #i {
   display: block;
-  width: 120px;
-  height: 120px;
-  border-radius: 8px;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%; /* 彩绘插画用圆形，避免方角切掉轮廓 */
   border: 1px solid var(--line-strong);
-  filter: grayscale(1) contrast(1.05);
-  transition: filter .2s, transform .2s;
+  background-color: #fff; /* 插画本身带浅灰纸纹，白底托住更干净 */
+  /* 保留一点灰度以贴合单色图纸风，但不再全灰：悬停恢复原色 */
+  filter: grayscale(.55) contrast(1.02);
+  transition: filter .25s, transform .2s;
 }
-.avatar-link:hover #i { filter: grayscale(0); transform: translateY(-2px); }
+.avatar-link:hover #i { filter: grayscale(0) contrast(1); transform: translateY(-2px); }
 .avatar-note {
   display: block;
   margin-top: 7px;
