@@ -14,6 +14,12 @@ var scale = window.devicePixelRatio; // Change scale to 1 on retina screens to s
 // 站点图标固定为小猫咪 favicon（assets/images/favicon.svg），不再用头像覆盖
 
 var userLang = navigator.language || navigator.userLanguage;
+// 手动语言选择覆盖浏览器语言（head 脚本按 donate-lang 决定；auto 时不覆盖）
+try {
+  var langPref = localStorage.getItem("donate-lang");
+  if (langPref === "zh") userLang = "zh-CN";
+  else if (langPref === "en") userLang = "en-US";
+} catch (e) { /* localStorage 不可用时按浏览器语言 */ }
 if (multilingual !== false) {
   if (/zh-CN|zh-cn|zh-Hans|zh-hans|cn/i.test(userLang)) {
     if (typeof myname_hans === "string") {
@@ -162,7 +168,7 @@ if (navigator.userAgent.includes('Alipay')) {
 }
 else if (navigator.userAgent.includes('MicroMessenger')) {
   if (nowechat === true) {
-    alert("WeChat Pay is not set up by the admin \n 管理员没有设置微信支付");
+    alert("WeChat is not set up by the admin \n 管理员没有设置微信支付");
     if (location.href.substr(location.href.lastIndexOf('#') + 1) == "showqrcode" && !selected) document.getElementById('showqrcode').style.display = "none";
   }
   else {
@@ -174,7 +180,7 @@ else if (navigator.userAgent.includes('MicroMessenger')) {
     var finaltitle = "";
     var finalsub = "";
     removal();
-    console.log("%c WeChat Pay Detected ", "color: green");
+    console.log("%c WeChat Detected ", "color: green");
   }
 }
 else {

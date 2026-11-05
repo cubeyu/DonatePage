@@ -190,60 +190,21 @@ a { color: inherit; }
   font-size: 15px;
   line-height: 1.7;
 }
-/* 标签 chips */
-.profile-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 12px !important;
-}
-.chip {
-  display: inline-block;
-  padding: 3px 12px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  color: var(--fg-dim);
-  font-size: 12.5px;
-  line-height: 1.7;
-  transition: color .15s, border-color .15s;
-}
-.chip:hover { color: var(--fg); border-color: var(--fg-faint); }
 
-/* ============ 捐赠组（竖排手写标题 + 按钮，置于个人信息区右侧） ============ */
-.pay-group {
-  flex: 0 0 auto;   /* 按内容宽度，不收缩 */
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-left: auto;
-  margin-right: 0; /* 贴内容列右缘，收窄整行 */
-  padding-left: 14px;
-}
-.pay-title {
-  margin: 0;
-  writing-mode: vertical-rl; /* 竖排 */
-  font-family: var(--hand);  /* 手写字体（同图侧批注） */
-  font-style: italic;
-  font-weight: 400;
-  font-size: 23px;
-  line-height: 1.25;
-  letter-spacing: .18em;
-  color: var(--fg-dim);
-  transform: rotate(2deg);
-  user-select: none;
-}
-.pay-buttons { margin: 0; }
+/* ============ 支付按钮（简介下方横排） ============ */
+.buttons { margin-top: 18px; }
 .paybtns {
   display: flex;
-  flex-direction: column; /* 竖排按钮，与竖排标题对齐 */
-  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
   margin: 0;
 }
 .btn-sep {
   flex: 0 0 auto;
-  width: 1px;
-  height: 14px;
+  width: 16px;
+  height: 1px;
   align-self: center;
   background: var(--hatch); /* 分隔短线用剖面线纹理 */
 }
@@ -291,75 +252,141 @@ a { color: inherit; }
   transform: rotate(1.2deg);
 }
 
-/* ============ Fig.2 信息网格 ============ */
-.meta-grid {
+/* ============ Overview 信息区（布局对齐 anxforever.cn） ============ */
+.overview {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px 24px;
-  font-size: 13px;
+  gap: 10px 16px;
 }
-.meta-item { margin: 0; color: var(--fg); }
-.meta-item .dim { font-family: var(--mono); }
-.swipe-item {
-  grid-column: 1 / -1;
+/* 中缝虚线（大屏显示） */
+.overview::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-9px);
+  border-right: 1px dashed var(--line-strong);
+  pointer-events: none;
+}
+.intro-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 14px;
+  min-height: 36px;
 }
-/* 滑动解锁邮箱：胶囊轨道 + 圆角滑块 */
-.swipe-track {
-  position: relative;
-  display: inline-flex;
+.intro-content {
+  margin: 0;
+  color: var(--fg);
+  text-wrap: balance;
+}
+.intro-content .dim { color: var(--fg-dim); }
+.link {
+  color: inherit;
+  text-decoration: none;
+  transition: color .15s;
+}
+.link:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 2px; }
+
+/* 图标块：24px 方角小格 + 外圈 ring，站点视觉签名 */
+.icon-tile {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
   align-items: center;
   justify-content: center;
-  flex: 1 1 260px;
-  max-width: 340px;
-  min-height: 34px;
-  padding: 3px;
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: 6px;
   background: var(--bg-raised);
+  color: var(--fg-dim);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 0 2px var(--line);
+}
+.icon-tile svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+/* 滑动解锁邮箱：外框 + 虚线轨道 + 白色方形滑块（对齐参考实现） */
+.email-reveal { display: flex; align-items: center; }
+.slide-wrap {
+  width: 216px;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--bg-raised);
+  box-shadow: inset 0 0 0 1px rgba(232, 230, 227, .1);
+}
+.slide-track {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  background: var(--bg);
   overflow: hidden;
   cursor: pointer;
   user-select: none;
   touch-action: none;
 }
-.swipe-hint {
-  font-size: 12px;
+.slide-text {
+  font-size: 13px;
   color: var(--fg-faint);
   pointer-events: none;
-  padding-right: 40px;
+  padding-left: 52px; /* 让位给滑块 */
 }
-.swipe-knob {
+.slide-handle {
   position: absolute;
-  left: 3px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 42px;
-  height: 26px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: var(--fg);
-  color: var(--bg);
-  font-size: 13px;
-  line-height: 1;
-  cursor: grab;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 56px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
   padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  color: #9a9a9a;
+  cursor: grab;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .18);
 }
-.swipe-knob:active { cursor: grabbing; }
-.swipe-addr {
-  display: none;
-  font-size: 13px;
-  color: var(--fg);
-  text-decoration: none;
-  padding: 4px 10px;
+.slide-handle:active { cursor: grabbing; }
+.slide-handle svg { width: 18px; height: 18px; pointer-events: none; }
+.email-revealed {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: fadeIn .25s ease-out;
 }
-.swipe-track.open { cursor: default; }
-.swipe-track.open .swipe-addr { display: inline; animation: fadeIn .25s ease-out; }
-.swipe-track.open .swipe-knob { display: none; }
-.swipe-track.open .swipe-hint { display: none; }
-.swipe-addr:hover { text-decoration: underline; }
+.email-revealed[hidden] { display: none; }
+.copy-btn {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg-dim);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s, color .15s, background-color .15s;
+}
+.email-item:hover .copy-btn,
+.copy-btn:focus-visible { opacity: 1; }
+.copy-btn:hover { color: var(--fg); background: var(--bg-hover); }
+.copy-btn svg { width: 15px; height: 15px; }
+.copy-btn.copied { color: var(--fg); opacity: 1; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ============ 页脚 ============ */
@@ -457,20 +484,44 @@ a { color: inherit; }
   .blueprint { grid-template-columns: 1fr; }
   .sheet { border-left: none; border-right: none; }
   .margin-note { display: none; }
-  .pay-group { margin-left: 0; padding-left: 0; } /* 窄屏换行后靠左 */
 }
+
+/* 中窄屏：头像 + 文字一行，按钮保持横排；信息区改单列并隐藏中缝 */
+@media (max-width: 720px) {
+  .profile { gap: 14px 16px; }
+  .avatar-link { flex: 0 0 96px; }
+  #i { width: 96px; height: 96px; }
+  .avatar-note { font-size: 13px; }
+  .texts { flex: 1 1 0; min-width: 0; } /* 占满剩余宽度，不再逐字换行 */
+  /* 缩小按钮，确保两个按钮 + 分隔符在同一水平线 */
+  .paybtns { flex-wrap: nowrap; gap: 8px; }
+  .btn-geek { padding: 8px 12px; font-size: 14px; gap: 7px; }
+  .btn-sep { width: 10px; }
+  .overview { grid-template-columns: 1fr; }
+  .overview::after { display: none; }
+}
+
 @media (max-width: 560px) {
   .sheet { padding: 0 20px 40px; }
   .topbar { padding: 12px 16px; }
-  .meta-grid { grid-template-columns: 1fr; }
   #currentqrcode img { width: 240px; }
+  .btn-geek { padding: 7px 11px; font-size: 13.5px; gap: 6px; }
+}
+
+/* 极窄屏：头像缩小、按钮进一步收窄但仍并排一行 */
+@media (max-width: 400px) {
+  .avatar-link { flex: 0 0 80px; }
+  #i { width: 80px; height: 80px; }
+  .paybtns { flex-wrap: nowrap; gap: 6px; }
+  .btn-geek { flex: 0 1 auto; padding: 7px 10px; font-size: 13px; }
+  .btn-sep { display: none; }
 }
 
 /* 减少动态效果偏好 */
 @media (prefers-reduced-motion: reduce) {
   .cursor { animation: none; }
   .voxel-wrap { transition: none; }
-  .swipe-track.open .swipe-addr { animation: none; }
+  .email-revealed { animation: none; }
 }
 
 /* ============================================================
@@ -502,7 +553,7 @@ a { color: inherit; }
   --hatch: repeating-linear-gradient(315deg, #c6c6c0 0, #c6c6c0 1px, transparent 0, transparent 6px);
 }
 /* 主题过渡（切换时柔和渐变） */
-body, .topbar, .sheet, .btn-geek, .modal-container, .swipe-track {
+body, .topbar, .sheet, .btn-geek, .modal-container, .slide-track, .icon-tile, .slide-wrap {
   transition: background-color .25s ease, color .25s ease, border-color .25s ease;
 }
 
@@ -560,16 +611,72 @@ body, .topbar, .sheet, .btn-geek, .modal-container, .swipe-track {
 .theme-toggle svg {
   width: 16px;
   height: 16px;
+}
+/* 语言切换按钮：仅 En/文 双卡片翻译图标（不显示文字标签） */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg-dim);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color .15s, background-color .15s;
+}
+.lang-toggle:hover {
+  color: var(--fg);
+  background: var(--bg-hover);
+}
+.lang-icon {
+  width: 19px;
+  height: 19px;
+  overflow: visible;
+}
+.lang-icon .lang-card-back {
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-width: 1.6;
 }
-/* 暗色显示月亮，亮色显示太阳 */
-.theme-toggle .icon-sun { display: none; }
-[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+.lang-icon text {
+  font-family: var(--sans);
+  font-weight: 700;
+}
+.lang-icon .lang-glyph-outline { fill: currentColor; }
+.lang-icon .lang-glyph-fill { fill: var(--bg); }
+
+/* 中英双语节点：按 html[lang] 显示（head 内联脚本在样式表前设置，无闪烁） */
+.i18n-en { display: none; }
+html[lang="en"] .i18n-zh { display: none; }
+html[lang="en"] .i18n-en { display: inline; }
+/* Dark Side 主题图标：暗色下旋转 180°，500ms 缓动（同参考实现） */
+.theme-toggle .icon-darkside {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transform-origin: center;
+  transition: transform .5s ease;
+}
+html[data-theme="dark"] .theme-toggle .icon-darkside { transform: rotate(180deg); }
+
+/* 切换主题的圆形模糊扩散过渡（View Transitions API，参考 anxforever.cn 的 circle-blur burst） */
+::view-transition-group(root) {
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(root) {
+  animation: none;
+  animation-fill-mode: both;
+  z-index: -1;
+}
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="blur"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="20" cy="20" r="18" fill="white" filter="url(%23blur)"/></svg>') center / 0 no-repeat;
+  animation: vt-scale 1s;
+  animation-fill-mode: both;
+}
+@keyframes vt-scale { to { mask-size: 200vmax; } }
 
 /* ============ Fig.3 GitHub 贡献热力图 ============ */
 .heatmap .fig-label { margin-bottom: 14px; }

@@ -8,14 +8,25 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests">
     <script>
-        // 防主题闪烁：在样式表加载前确定 data-theme（localStorage 优先，其次系统偏好，默认暗色）
+        // 防主题闪烁：样式表加载前确定初始主题
+        // 存储值 "auto" = 跟随系统（默认）；也可为 "light"/"dark"（用户手动固定）
         (function () {
-            var t = "dark";
-            try {
-                t = localStorage.getItem("donate-theme") ||
-                    (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-            } catch (e) { /* localStorage 不可用时保持暗色 */ }
-            document.documentElement.setAttribute("data-theme", t);
+            var mode = "auto";
+            try { mode = localStorage.getItem("donate-theme") || "auto"; } catch (e) { /* 隐私模式等场景回退到 auto */ }
+            var sysLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+            var effective = mode === "auto" ? (sysLight ? "light" : "dark") : mode;
+            document.documentElement.setAttribute("data-theme-mode", mode);
+            document.documentElement.setAttribute("data-theme", effective);
+        })();
+        // 语言判定：auto 跟随浏览器（zh*→中文，其余→英文），也可手动固定 zh / en
+        (function () {
+            var mode = "auto", lang = "zh";
+            try { mode = localStorage.getItem("donate-lang") || "auto"; } catch (e) { /* 忽略 */ }
+            if (mode === "zh") lang = "zh";
+            else if (mode === "en") lang = "en";
+            else lang = /^zh/i.test(navigator.language || "zh") ? "zh" : "en";
+            document.documentElement.setAttribute("lang", lang === "en" ? "en" : "zh-CN");
+            window.__donateLang = { mode: mode, lang: lang };
         })();
     </script>
     <link rel="preconnect" href="https://api.github.com" crossorigin>
@@ -45,11 +56,22 @@
         <span class="topbar-actions">
             <a class="star-badge" href="https://github.com/cubeyu/DonatePage" target="_blank" rel="noopener noreferrer" title="DonatePage 仓库星标" aria-label="DonatePage 的 GitHub 星标数">
                 <svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                <span class="star-count mono" id="starCount">–</span>
+                <span class="star-count mono" id="starCount">2</span>
             </a>
+            <button class="lang-toggle" id="langToggle" type="button" aria-label="切换语言（中文 / English）" title="切换语言">
+                <svg class="lang-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <!-- 后卡片：描边 + 汉字“文” -->
+                    <rect class="lang-card-back" x="9.8" y="6.2" width="11.4" height="14.3" rx="2.8"/>
+                    <text class="lang-glyph-outline" x="15.5" y="16.4" font-size="7.8" text-anchor="middle">文</text>
+                    <!-- 前卡片：实心 + “En”，微倾模拟参考图示的斜边 -->
+                    <g transform="rotate(-7 8 11)">
+                        <rect x="2.6" y="3.4" width="10.6" height="14.8" rx="2.8" fill="currentColor"/>
+                        <text class="lang-glyph-fill" x="7.9" y="12.8" font-size="6.2" text-anchor="middle">En</text>
+                    </g>
+                </svg>
+            </button>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换黑夜 / 白天主题" title="切换主题">
-                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-darkside" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 .5C7.4.5.5 7.4.5 16S7.4 31.5 16 31.5 31.5 24.6 31.5 16 24.6.5 16 .5zm0 28.1V3.4C23 3.4 28.6 9 28.6 16S23 28.6 16 28.6z"/></svg>
             </button>
         </span>
     </header>
@@ -70,45 +92,60 @@
                 </a>
                 <div class="texts">
                     <p class="profile-name mono">cubeyu <span class="verified" title="本人认证" aria-label="已认证">✓</span></p>
-                    <p class="profile-bio">开发者 · 开源爱好者 · 相信自由软件的力量</p>
-                    <p class="profile-chips">
-                        <span class="chip mono">#open-source</span>
-                        <span class="chip mono">#GPL-3.0</span>
-                        <span class="chip mono">#Shanxi</span>
-                    </p>
-                </div>
-                <div class="pay-group">
-                    <h2 id="name" class="pay-title"></h2>
-                    <div class="pay-buttons" id="pending">
+                    <p class="profile-bio"><span class="i18n-zh">开发者 · 开源爱好者 · 相信自由软件的力量</span><span class="i18n-en">Developer · Open-source enthusiast · Believes in free software</span></p>
+                    <div class="buttons" id="pending">
                         <p id="depends" class="paybtns">
                             <a href="#showqrcode" class="btn-geek" id="toclick" onclick="openwechat()">
                                 <svg aria-hidden="true" class="icon"><use xlink:href="#icon-weixinzhifu"></use></svg>
-                                微信支付
+                                <span class="i18n-zh">微信支付</span><span class="i18n-en">WeChat</span>
                             </a>
                             <span class="btn-sep" aria-hidden="true"></span>
                             <a href="#showqrcode" class="btn-geek" id="alipaybtn" onclick="openalipay()">
                                 <svg aria-hidden="true" class="icon"><use xlink:href="#icon-iconfontrectangle390"></use></svg>
-                                支付宝
+                                <span class="i18n-zh">支付宝</span><span class="i18n-en">Alipay</span>
                             </a>
                         </p>
                         <p class="handwritten annotation-pay" aria-hidden="true">scan me →</p>
                     </div>
                 </div>
+                <h2 id="name" hidden></h2>
                 <p id="description" hidden></p>
             </section>
             <section class="meta sector">
-                <p class="fig-label mono">Fig. 2 — who &amp; where</p>
-                <div class="meta-grid">
-                    <p class="meta-item mono">📍 Shanxi, China</p>
-                    <p class="meta-item mono"><span id="clock">--:--:--</span> <span class="dim">// Asia/Shanghai</span></p>
-                    <p class="meta-item swipe-item">
-                        <span class="dim mono" id="mailHint">📧 email:</span>
-                        <span class="swipe-track" id="swipeTrack">
-                            <span class="swipe-hint mono" id="swipeHint">slide to reveal →</span>
-                            <button class="swipe-knob mono" id="swipeKnob" type="button" aria-label="滑动解锁显示邮箱">→</button>
-                            <a class="swipe-addr mono" id="mailAddr" href="mailto:cubeyu@aliyun.com">cubeyu@aliyun.com</a>
+                <div class="overview">
+                    <div class="intro-item">
+                        <span class="icon-tile" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
-                    </p>
+                        <p class="intro-content mono"><a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E8%A5%BF%EF%BC%8C%E4%B8%AD%E5%9B%BD" target="_blank" rel="noopener noreferrer" aria-label="位置：山西，中国"><span class="i18n-zh">山西，中国</span><span class="i18n-en">Shanxi, China</span></a></p>
+                    </div>
+                    <div class="intro-item">
+                        <span class="icon-tile" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path id="clockHands" d="M12 12 L12 6 M12 12 L18 12"/></svg>
+                        </span>
+                        <p class="intro-content mono"><span id="clock">--:-- --</span><span class="dim" id="clockDiff"> // same time</span></p>
+                    </div>
+                    <div class="intro-item email-item">
+                        <span class="icon-tile" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </span>
+                        <div class="email-reveal" id="emailReveal">
+                            <div class="slide-wrap" id="slideWrap">
+                                <div class="slide-track" id="swipeTrack">
+                                    <span class="slide-text" id="swipeHint"><span class="i18n-zh">滑动显示邮箱</span><span class="i18n-en">Slide to reveal</span></span>
+                                    <button class="slide-handle" id="swipeKnob" type="button" aria-label="滑动显示邮箱">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12 12.75 3v4.696H0v8.608h12.75V21z" fill="currentColor"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="email-revealed" id="emailRevealed" hidden>
+                                <a class="link mono" id="mailAddr" href="mailto:cubeyu@aliyun.com">cubeyu@aliyun.com</a>
+                                <button class="copy-btn" id="copyEmail" type="button" title="复制邮箱" aria-label="复制邮箱">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </section>
             <section class="heatmap sector">
@@ -288,35 +325,70 @@
                 } catch (err) { /* 音频不可用时静默忽略 */ }
             });
 
-            // --- 实时时钟（Asia/Shanghai） ---
+            // --- 实时时钟（12 小时制 + 时差提示 + 转动表针，对齐 anxforever.cn） ---
             var clockEl = document.getElementById("clock");
-            function tick() {
-                try {
-                    clockEl.textContent = new Date().toLocaleTimeString("en-US", {
-                        timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-                    });
-                } catch (err) {
-                    clockEl.textContent = new Date().toTimeString().slice(0, 8);
-                }
-            }
-            tick();
-            setInterval(tick, 1000);
+            var clockDiffEl = document.getElementById("clockDiff");
+            var clockHandsEl = document.getElementById("clockHands");
 
-            // --- 滑动解锁邮箱（拖动滑块到右侧展开，支持键盘/点击回退） ---
+            function clockHandsPath(hour, minute) {
+                var h = hour % 12;
+                var round = function (n) { return Math.round(n * 1000) / 1000; };
+                var minuteAngle = (minute / 60) * 2 * Math.PI;
+                var hourAngle = ((h + minute / 60) / 12) * 2 * Math.PI;
+                var hx = round(12 + 3.6 * Math.sin(hourAngle));
+                var hy = round(12 - 3.6 * Math.cos(hourAngle));
+                var mx = round(12 + 6 * Math.sin(minuteAngle));
+                var my = round(12 - 6 * Math.cos(minuteAngle));
+                return "M12 12 L" + hx + " " + hy + " M12 12 L" + mx + " " + my;
+            }
+
+            function computeClock() {
+                var now = new Date();
+                var time, hour, minute;
+                try {
+                    time = new Intl.DateTimeFormat("en-US", {
+                        timeZone: "Asia/Shanghai", hour: "2-digit", minute: "2-digit", hour12: true
+                    }).format(now);
+                } catch (err) {
+                    time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+                }
+                var m = /(\d{1,2}):(\d{2})\s*(AM|PM)/i.exec(time);
+                hour = m ? parseInt(m[1], 10) : 12;
+                minute = m ? parseInt(m[2], 10) : 0;
+                if (m && /PM/i.test(m[3]) && hour !== 12) hour += 12;
+                if (m && /AM/i.test(m[3]) && hour === 12) hour = 0;
+
+                // 与访客时区比较：差不足 1 小时显示 "// same time"，否则 ahead / behind
+                var viewerOffset = -now.getTimezoneOffset();
+                var targetOffset = 480; // Asia/Shanghai = UTC+8
+                try {
+                    targetOffset = (new Date(now.toLocaleString("en-US", { timeZone: "Asia/Shanghai" })).getTime() -
+                        new Date(now.toLocaleString("en-US", { timeZone: "UTC" })).getTime()) / 60000;
+                } catch (err) { /* 保留默认 UTC+8 */ }
+                var hoursDiff = Math.abs(targetOffset - viewerOffset) / 60;
+                var diff = hoursDiff < 1 ? " // same time" :
+                    " // " + Math.floor(hoursDiff) + "h " + (targetOffset > viewerOffset ? "ahead" : "behind");
+
+                clockEl.textContent = time;
+                clockDiffEl.textContent = diff;
+                clockHandsEl.setAttribute("d", clockHandsPath(hour, minute));
+            }
+            computeClock();
+            setInterval(computeClock, 60000);
+
+            // --- 滑动解锁邮箱（结构对齐 anxforever.cn：虚线轨道 + 白色方形滑块） ---
+            var slideWrap = document.getElementById("slideWrap");
             var track = document.getElementById("swipeTrack");
             var knob = document.getElementById("swipeKnob");
-            var hint = document.getElementById("swipeHint");
-            var mailHint = document.getElementById("mailHint");
-            var addr = document.getElementById("mailAddr");
+            var revealed = document.getElementById("emailRevealed");
+            var copyBtn = document.getElementById("copyEmail");
             var opened = false;
 
             function openMail() {
                 if (opened) return;
                 opened = true;
-                track.classList.add("open");
-                knob.style.left = "";
-                hint.style.display = "none";
-                mailHint.textContent = "📧 email:";
+                slideWrap.hidden = true;      // 收起滑动条
+                revealed.hidden = false;      // 显示邮箱地址
                 knob.setAttribute("aria-hidden", "true");
                 knob.tabIndex = -1;
             }
@@ -350,14 +422,99 @@
                 dragging = false;
                 if (!opened) knob.style.left = "0px"; // 未达阈值弹回
             });
-
-            // --- 主题切换（黑夜/白天，跟随系统偏好，手动切换写入 localStorage） ---
-            var themeToggle = document.getElementById("themeToggle");
-            themeToggle.addEventListener("click", function () {
-                var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-                document.documentElement.setAttribute("data-theme", next);
-                try { localStorage.setItem("donate-theme", next); } catch (e) { /* 忽略存储失败 */ }
+            // 复制邮箱（悬停显示按钮）
+            var copyDefaultTip = document.documentElement.lang === "en" ? "Copy email" : "复制邮箱";
+            var copyDoneTip = document.documentElement.lang === "en" ? "Copied" : "已复制";
+            copyBtn.title = copyDefaultTip;
+            copyBtn.setAttribute("aria-label", copyDefaultTip);
+            copyBtn.addEventListener("click", function () {
+                if (!navigator.clipboard) return;
+                navigator.clipboard.writeText("cubeyu@aliyun.com").then(function () {
+                    copyBtn.classList.add("copied");
+                    copyBtn.title = copyDoneTip;
+                    setTimeout(function () {
+                        copyBtn.classList.remove("copied");
+                        copyBtn.title = copyDefaultTip;
+                    }, 1600);
+                }).catch(function () { /* 剪贴板不可用时忽略 */ });
             });
+
+            // --- 语言切换（两态：中 ⇄ English；auto 为内部状态，不展示） ---
+            var langToggle = document.getElementById("langToggle");
+
+            // 与主题按钮同语义：点一次直接切换中/英；
+            // 若切到的语言恰好等于浏览器语言，则内部回归 auto（跟随浏览器），UI 不展示 auto。
+            function currentLangState() {
+                return window.__donateLang || { mode: "auto", lang: "zh" };
+            }
+            function sysLang() {
+                return /^zh/i.test(navigator.language || "zh") ? "zh" : "en";
+            }
+            function renderLangToggle() {
+                var tip = currentLangState().lang === "zh" ? "切换到 English" : "切换到中文";
+                langToggle.title = tip;
+                langToggle.setAttribute("aria-label", tip);
+            }
+            renderLangToggle();
+            langToggle.addEventListener("click", function () {
+                var next = currentLangState().lang === "zh" ? "en" : "zh";
+                // 切到的语言与浏览器语言一致时回归 auto，否则固定该语言
+                var mode = next === sysLang() ? "auto" : next;
+                try { localStorage.setItem("donate-lang", mode); } catch (e) { /* 忽略存储失败 */ }
+                location.reload(); // 文案与 document.title 均由 function.js 依据语言重新渲染
+            });
+
+            // --- 主题切换（对齐 anxforever.cn：Dark Side 图标 + 圆形模糊过渡） ---
+            // 语义：点击在亮/暗间切换；若切到的主题恰好等于系统主题则回到 auto，
+            // 与参考实现的 `setTheme(next === systemTheme ? "system" : next)` 一致。
+            var themeToggle = document.getElementById("themeToggle");
+            var root = document.documentElement;
+            var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)");
+
+            function themeLabel(mode) {
+                return mode === "auto" ? "主题：自动（跟随系统），点击切换" :
+                       mode === "light" ? "主题：亮色，点击切换暗色" :
+                       "主题：暗色，点击切换亮色";
+            }
+
+            function applyThemeMode(mode) {
+                var sysLight = prefersLight && prefersLight.matches;
+                var effective = mode === "auto" ? (sysLight ? "light" : "dark") : mode;
+                root.setAttribute("data-theme-mode", mode);
+                root.setAttribute("data-theme", effective);
+                try { localStorage.setItem("donate-theme", mode); } catch (e) { /* 忽略存储失败 */ }
+                themeToggle.setAttribute("title", themeLabel(mode));
+                themeToggle.setAttribute("aria-label", themeLabel(mode));
+            }
+
+            themeToggle.addEventListener("click", function () {
+                var curEff = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+                var next = curEff === "dark" ? "light" : "dark";
+                var sysLight = prefersLight && prefersLight.matches;
+                var sysEff = sysLight ? "light" : "dark";
+                // 切到与系统一致的主题时回归 auto，否则固定该主题
+                var mode = next === sysEff ? "auto" : next;
+                var apply = function () { applyThemeMode(mode); };
+
+                // 圆形模糊扩散过渡（参考 anxforever.cn 的 circle-blur burst）
+                if (document.startViewTransition &&
+                    window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+                    document.startViewTransition(apply);
+                } else {
+                    apply();
+                }
+            });
+
+            // 跟随系统主题实时变化（仅 auto 模式下生效）
+            if (prefersLight) {
+                var onSysChange = function () {
+                    if ((root.getAttribute("data-theme-mode") || "auto") === "auto") {
+                        applyThemeMode("auto");
+                    }
+                };
+                if (prefersLight.addEventListener) prefersLight.addEventListener("change", onSysChange);
+                else if (prefersLight.addListener) prefersLight.addListener(onSysChange); // Safari < 14
+            }
 
             // --- GitHub 星标数（DonatePage 仓库徽标） ---
             (function () {
