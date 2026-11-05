@@ -1,13 +1,22 @@
 {
   "name": "donatepage",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "packageManager": "pnpm@11.22.0",
-  "description": "个人多合一收款网站，支持微信、支付宝、QQ钱包等多种方式。https://donate.techisle.top",
+  "description": "蓝图图纸风格的个人开源捐赠页，支持微信、支付宝收款。https://donate.techisle.top",
   "homepage": "https://donate.techisle.top",
   "repository": {
     "type": "git",
     "url": "https://github.com/cubeyu/DonatePage"
   },
+  "keywords": [
+    "donate",
+    "donation-page",
+    "qrcode",
+    "static-site",
+    "gulp",
+    "geek",
+    "blueprint"
+  ],
   "license": "GPL-3.0-or-later",
   "author": "Cubeyu <cubeyu@aliyun.com>",
   "scripts": {
@@ -18,7 +27,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",

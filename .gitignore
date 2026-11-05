@@ -1,8 +1,9 @@
 # 依赖
 node_modules/
 
-# 构建产物
+# 构建产物（由 pnpm build 生成，不入库）
 public/
+assets/bundles/
 
 # 日志
 *.log

@@ -110,7 +110,7 @@ var myname = "你的名字",
 
 **像素标题文字**——蓝图交互脚本的 `WORD` 与 `GLYPHS` 点阵（3×5 字模）。
 
-改完记得 `pnpm build`（`assets/bundles/` 是提交进仓库的构建产物）。
+改完记得 `pnpm build` 重新生成 bundle（`assets/bundles/` 是构建产物，不入库，由 CI/Vercel 在部署时生成）。
 
 ## 项目结构
 
@@ -120,7 +120,7 @@ var myname = "你的名字",
 │   ├── js/function.js      # 核心逻辑：多语言 / UA 检测 / 二维码
 │   ├── js/iconfont.js      # SVG 图标（微信 / 支付宝）
 │   ├── styles/style.css    # 蓝图样式（自包含，零框架依赖）
-│   └── bundles/            # 构建产物（提交进仓库）
+│   └── bundles/            # 构建产物（pnpm build 生成，不入库）
 ├── gulpfile.js             # 构建链（绝不修改源文件）
 ├── vercel.json             # Vercel 配置 + 安全响应头
 ├── screenshots/            # README 截图
@@ -132,6 +132,13 @@ var myname = "你的名字",
 - **[Merger](https://github.com/qr-merger/merger)**（GPL-3.0）—— 本项目的起点，核心收款逻辑（多语言 / UA 检测 / 二维码）源自其 v0.28.6
 - **[anxforever.cn](https://anxforever.cn)**（MIT）—— 图纸美学的灵感来源
 - [jQuery](https://jquery.com) / [jquery-qrcode](https://larsjung.de/jquery-qrcode/) —— 打包进本地 bundle，无 CDN 依赖
+
+## 参与贡献
+
+- [贡献指南](.github/CONTRIBUTING.md) —— 本地开发、代码约定、提交规范
+- [行为准则](.github/CODE_OF_CONDUCT.md) —— 社区交流的基本约定
+- [安全政策](.github/SECURITY.md) —— 漏洞报告流程（请勿公开提交安全 Issue）
+- [提交 Issue](https://github.com/cubeyu/DonatePage/issues/new/choose) —— Bug 报告 / 功能建议 / 配置求助
 
 ## 许可
 

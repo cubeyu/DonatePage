@@ -1,0 +1,41 @@
+name: 配置问题
+description: 搭建自己的捐赠页时遇到问题
+title: "[Config] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        搭建自己的捐赠页时遇到的问题（收款码配置、部署、构建等）。
+        **请勿**粘贴真实收款码或个人信息，用占位内容代替即可。
+
+  - type: textarea
+    id: question
+    attributes:
+      label: 问题描述
+      description: 你遇到了什么？卡在哪一步？
+    validations:
+      required: true
+
+  - type: dropdown
+    id: stage
+    attributes:
+      label: 出问题的环节
+      options:
+        - 修改收款码配置（index.html 顶部变量）
+        - 本地构建（pnpm install / pnpm build）
+        - 本地预览（pnpm start）
+        - 部署到 Vercel / GitHub Pages
+        - 自定义样式或文案
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: 报错信息
+      description: 终端或浏览器控制台的完整报错
+      render: shell
+    validations:
+      required: false
