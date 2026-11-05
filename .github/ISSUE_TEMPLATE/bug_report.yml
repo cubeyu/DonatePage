@@ -1,0 +1,75 @@
+name: Bug 报告
+description: 报告一个可复现的问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量填写完整信息，便于定位问题。
+        **请勿**粘贴真实收款码、邮箱或其他敏感个人信息。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 发生了什么？期望的行为是什么？
+      placeholder: 例如：点击"微信支付"后弹窗没有出现二维码
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 一步步说明如何重现这个问题
+      placeholder: |
+        1. 打开 https://donate.techisle.top
+        2. 点击"微信支付"
+        3. 观察到 ...
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: 浏览器与版本
+      placeholder: 例如 Chrome 130 / Edge 130 / 微信内置浏览器（Android 14）
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: 例如 Windows 11 / macOS 15 / iOS 18
+    validations:
+      required: false
+
+  - type: dropdown
+    id: theme
+    attributes:
+      label: 主题模式
+      options:
+        - 暗色（默认）
+        - 浅色
+        - 两者都有问题
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图或录屏
+      description: 拖入图片即可。请遮挡任何敏感信息。
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 控制台输出
+      description: 按 F12 打开开发者工具，复制 Console 中的报错信息
+      render: shell
+    validations:
+      required: false
