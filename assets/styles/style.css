@@ -151,12 +151,17 @@ a { color: inherit; }
   transition: filter .25s, transform .2s;
 }
 .avatar-link:hover #i { filter: grayscale(0) contrast(1); transform: translateY(-2px); }
+/* that's me 批注：头像上方，箭头 ↘ 指向头像 */
 .avatar-note {
   display: block;
-  margin-top: 7px;
+  margin-bottom: 7px;
   font-size: 15px;
   transform: rotate(-2deg);
 }
+/* 桌面按钮顺序：AI 代捐 · 支付宝 · 微信支付（AI 与微信互换，DOM 顺序不动，纯 order 重排，
+   避免动 function.js 依赖的 #toclick/#alipaybtn 结构图） */
+#agentbtn { order: -1; }
+#toclick { order: 1; }
 .texts {
   flex: 1 1 0;      /* 基准宽度归零，按剩余空间分配，确保捐赠组与头像同行 */
   min-width: 0;     /* 允许内容收缩换行 */
@@ -185,10 +190,13 @@ a { color: inherit; }
   line-height: 1;
   vertical-align: 2px;
 }
-/* 个人简介 */
+/* 个人简介：keep-all 禁止 CJK 字间断行（"相信"不再被拆开），断行只发生在空格处；
+   overflow-wrap:anywhere 兜底防止极窄视口溢出 */
 .texts .profile-bio {
   font-size: 15px;
   line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 /* ============ 支付按钮（简介下方横排） ============ */
@@ -247,9 +255,90 @@ a { color: inherit; }
   fill: currentColor;
   vertical-align: -0.12em;
 }
+/* scan me 批注（#depends 内 flex item，span）：桌面在按钮组下方第二行、箭头 ↗ 斜指上方的
+   AI 代捐按钮；窄屏（≤560px）在 AI 代捐左侧同行、箭头 ↘ 斜指（断点覆盖 order 与箭头方向）。
+   断行依赖 .btn-break 占位符（flex-basis:100%，DOM 在微信支付之后、本批注之前）：
+   桌面 order 1 与微信同序且 DOM 靠后 → 排在微信后断行；窄屏 order 0 → 排在 AI 代捐后断行 */
 .annotation-pay {
-  margin: 10px 0 0;
+  order: 2;
+  margin: 0 6px 0 0;
+  align-self: flex-start;
   transform: rotate(1.2deg);
+  white-space: nowrap;
+}
+.btn-break {
+  display: block;
+  order: 1;
+  flex-basis: 100%;
+  height: 0;
+}
+/* 箭头字符按断点生成：桌面 ↗ 指上方按钮，窄屏 ↘ 指右下按钮 */
+.scan-arrow::before { content: "↗"; }
+/* AI 代捐按钮：第三种不对称圆角 + 反向微倾（延续手绘感变体序列） */
+#agentbtn.btn-geek {
+  border-radius: 5px 16px 8px 14px;
+  transform: rotate(-0.8deg);
+}
+.icon-robot {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.15em;
+}
+
+/* ============ AI 代捐提示词弹窗（纯 JS 显隐，不走 hash） ============ */
+/* button 版关闭钮：a.btn-clear 的等价物，补齐 button 默认样式重置 */
+.btn-clear-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+.agent-body { padding: 20px 18px 22px; text-align: left; }
+.agent-desc {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--fg-dim);
+}
+.agent-prompt {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  max-height: 180px;
+  overflow: auto;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--fg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere; /* 英文按单词断行、URL/长串仍可断（break-all 会腰斩英文单词） */
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+}
+/* 复制按钮：mono 边框风，与页面终端语言一致 */
+.agent-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+.agent-copy:hover { background: var(--bg-hover); border-color: var(--fg-faint); }
+.agent-copy svg { width: 15px; height: 15px; }
+/* 复制成功反馈：CSS 类切换（copy-label ⇄ copy-done），与 i18n 显隐正交 */
+.agent-copy .copy-done { display: none; }
+.agent-copy.copied .copy-label { display: none; }
+.agent-copy.copied .copy-done { display: inline; }
+.agent-fine {
+  margin: 14px 0 0;
+  font-size: 11.5px;
+  letter-spacing: .02em;
 }
 
 /* ============ Overview 信息区（布局对齐 anxforever.cn） ============ */
@@ -493,8 +582,8 @@ a { color: inherit; }
   #i { width: 96px; height: 96px; }
   .avatar-note { font-size: 13px; }
   .texts { flex: 1 1 0; min-width: 0; } /* 占满剩余宽度，不再逐字换行 */
-  /* 缩小按钮，确保两个按钮 + 分隔符在同一水平线 */
-  .paybtns { flex-wrap: nowrap; gap: 8px; }
+  /* 缩小按钮；按钮组 wrap：三个按钮一行，scan me 批注经 .btn-break 断行落到第二行 */
+  .paybtns { flex-wrap: wrap; gap: 8px; }
   .btn-geek { padding: 8px 12px; font-size: 14px; gap: 7px; }
   .btn-sep { width: 10px; }
   .overview { grid-template-columns: 1fr; }
@@ -506,14 +595,25 @@ a { color: inherit; }
   .topbar { padding: 12px 16px; }
   #currentqrcode img { width: 240px; }
   .btn-geek { padding: 7px 11px; font-size: 13.5px; gap: 6px; }
+  /* 两行排布：scan me + AI 代捐第一行（批注 ↘ 斜指右下按钮），微信 + 支付宝第二行；
+     order 与箭头方向在此覆盖桌面默认（桌面为按钮组下方第二行 + ↗）；
+     第二个分隔符随 AI 代捐前移而悬空一并隐藏 */
+  .paybtns { flex-wrap: wrap; }
+  /* break 与 AI 代捐同 order（DOM 在其后）→ 渲染序恰在 AI 代捐与微信之间，强制断行 */
+  .btn-break { order: -1; }
+  .annotation-pay { order: -2; transform: translateY(-2px) rotate(1.2deg); }
+  .scan-arrow::before { content: "↘"; }
+  #toclick { order: 0; }
+  .btn-sep:nth-of-type(2) { display: none; }
 }
 
-/* 极窄屏：头像缩小、按钮进一步收窄但仍并排一行 */
+/* 极窄屏：头像缩小、按钮进一步收窄（三按钮保持 wrap，前两个并排、AI 代捐+scan me 一行）
+   320px 视口实测是临界点：字号/内边距必须压到 12.5px/7px 9px 才能保证微信+支付宝同行 */
 @media (max-width: 400px) {
   .avatar-link { flex: 0 0 80px; }
   #i { width: 80px; height: 80px; }
-  .paybtns { flex-wrap: nowrap; gap: 6px; }
-  .btn-geek { flex: 0 1 auto; padding: 7px 10px; font-size: 13px; }
+  .paybtns { flex-wrap: wrap; gap: 6px; }
+  .btn-geek { flex: 0 1 auto; padding: 7px 9px; font-size: 12.5px; }
   .btn-sep { display: none; }
 }
 

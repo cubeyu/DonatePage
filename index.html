@@ -87,8 +87,9 @@
             </section>
             <section class="profile sector" id="h">
                 <a href="https://github.com/cubeyu" target="_blank" rel="noopener noreferrer" title="访问我的GitHub" class="avatar-link">
+                    <!-- that's me 批注在头像上方，箭头指向下方头像 -->
+                    <span class="avatar-note handwritten" aria-hidden="true">that's me ↘</span>
                     <i id="i"></i>
-                    <span class="avatar-note handwritten" aria-hidden="true">that's me ↗</span>
                 </a>
                 <div class="texts">
                     <p class="profile-name mono">cubeyu <span class="verified" title="本人认证" aria-label="已认证">✓</span></p>
@@ -104,8 +105,19 @@
                                 <svg aria-hidden="true" class="icon"><use xlink:href="#icon-iconfontrectangle390"></use></svg>
                                 <span class="i18n-zh">支付宝</span><span class="i18n-en">Alipay</span>
                             </a>
+                            <span class="btn-sep" aria-hidden="true"></span>
+                            <button type="button" class="btn-geek" id="agentbtn" aria-haspopup="dialog" aria-controls="agentmodal">
+                                <svg aria-hidden="true" class="icon-robot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V5"/><circle cx="12" cy="3.5" r="1.5"/><path d="M8 13v2M16 13v2M9.5 17.5h5"/></svg>
+                                <span class="i18n-zh">AI 代捐</span><span class="i18n-en">Agent donate</span>
+                            </button>
+                            <!-- 换行占位符：窄屏（scan me+AI 第一行后）与桌面（三个按钮后）各在此处强制断行，
+                                 让 scan me 批注落到按钮组下方 -->
+                            <i class="btn-break" aria-hidden="true"></i>
+                            <!-- scan me 批注：桌面在 AI 代捐按钮下方（箭头 ↗ 斜指），窄屏在 AI 代捐左侧同行（箭头 ↘ 斜指），
+                                 箭头字符由 CSS .scan-arrow::before 按断点生成。
+                                 注意必须是 span——#depends 是 <p>，p 嵌套会被浏览器拆开破坏 DOM -->
+                            <span class="handwritten annotation-pay" aria-hidden="true">scan me <span class="scan-arrow"></span></span>
                         </p>
-                        <p class="handwritten annotation-pay" aria-hidden="true">scan me →</p>
                     </div>
                 </div>
                 <h2 id="name" hidden></h2>
@@ -177,6 +189,26 @@
                 <div class="content" id="qrcontainer">
                     <div class="img smaller" id="currentqrcode"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- AI 代捐提示词弹窗：纯 JS 控制显隐（不走 hash），机器可读协议见 /donate-for-ai.md 与 /llms.txt -->
+    <div class="modal" id="agentmodal">
+        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="agenttitle">
+            <div class="modal-header">
+                <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="term-title mono" id="agenttitle">agent --donate</span>
+                <button type="button" class="btn-clear btn-clear-btn" id="agentclose" aria-label="关闭"></button>
+            </div>
+            <div class="modal-body agent-body">
+                <p class="agent-desc"><span class="i18n-zh">把这段话发给任意 AI 助手（Claude、扣子、支小宝……），它会替你决定金额并引导支付</span><span class="i18n-en">Paste this into any AI assistant — it will pick the amount and walk you through the payment</span></p>
+                <pre class="agent-prompt mono" id="agentprompt"></pre>
+                <button type="button" class="agent-copy" id="copyAgent">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span class="copy-label"><span class="i18n-zh">复制提示词</span><span class="i18n-en">Copy prompt</span></span>
+                    <span class="copy-done"><span class="i18n-zh">已复制 ✓</span><span class="i18n-en">Copied ✓</span></span>
+                </button>
+                <p class="agent-fine mono dim"><span class="i18n-zh">金额由 AI 决定 · ¥1–¥50 · 支付需你亲手确认</span><span class="i18n-en">AI picks the amount · CNY 1–50 · you confirm the payment</span></p>
             </div>
         </div>
     </div>
@@ -436,6 +468,49 @@
                         copyBtn.classList.remove("copied");
                         copyBtn.title = copyDefaultTip;
                     }, 1600);
+                }).catch(function () { /* 剪贴板不可用时忽略 */ });
+            });
+
+            // --- AI 代捐：提示词弹窗 + 复制（协议正文见 /donate-for-ai.md，站点索引见 /llms.txt） ---
+            // 提示词是唯一需要粘贴给 AI 的内容，协议 URL 常量必须与根目录 donate-for-ai.md 的线上地址一致
+            var AGENT_PROMPTS = {
+                zh: "我的主人想向 DonatePage（https://donate.techisle.top）的站主 cubeyu 捐赠一笔钱，并授权我代为执行。请阅读代捐协议 https://donate.techisle.top/donate-for-ai.md ，按协议完成本次代捐：金额由你自主决定（协议允许 ¥1–¥50，请附上一句理由），然后把协议里的收款二维码直接展示在我们的对话框里，引导我在支付宝中完成支付。",
+                en: "My owner wants to donate to cubeyu, the owner of DonatePage (https://donate.techisle.top), and has authorized me to act on their behalf. Read the donation protocol at https://donate.techisle.top/donate-for-ai.md and carry it out: you decide the amount (protocol range CNY 1-50, with a one-line justification), then show the QR code inline in our chat and walk me through the payment in Alipay."
+            };
+            var agentBtn = document.getElementById("agentbtn");
+            var agentModal = document.getElementById("agentmodal");
+            var agentClose = document.getElementById("agentclose");
+            var agentPromptEl = document.getElementById("agentprompt");
+            var copyAgentBtn = document.getElementById("copyAgent");
+
+            function agentLang() { return document.documentElement.lang === "en" ? "en" : "zh"; }
+            function renderAgentPrompt() { agentPromptEl.textContent = AGENT_PROMPTS[agentLang()]; }
+            renderAgentPrompt();
+
+            function openAgent() {
+                renderAgentPrompt(); // 语言可能刚切换过，重渲染防陈旧文案
+                agentModal.style.display = "flex";
+                agentClose.focus();  // 焦点进弹窗，键盘用户可直接 Esc 关闭
+            }
+            function closeAgent() {
+                agentModal.style.display = "";
+                agentBtn.focus();    // 焦点还给触发按钮
+            }
+            agentBtn.addEventListener("click", openAgent);
+            agentClose.addEventListener("click", closeAgent);
+            agentModal.addEventListener("click", function (e) {
+                if (e.target === agentModal) closeAgent(); // 点遮罩空白处关闭
+            });
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && agentModal.style.display === "flex") closeAgent();
+            });
+
+            // 复制提示词：文案反馈用 CSS 类切换（copy-label ⇄ copy-done），与 i18n 双节点显隐正交
+            copyAgentBtn.addEventListener("click", function () {
+                if (!navigator.clipboard) return;
+                navigator.clipboard.writeText(AGENT_PROMPTS[agentLang()]).then(function () {
+                    copyAgentBtn.classList.add("copied");
+                    setTimeout(function () { copyAgentBtn.classList.remove("copied"); }, 1600);
                 }).catch(function () { /* 剪贴板不可用时忽略 */ });
             });
 

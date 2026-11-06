@@ -84,12 +84,16 @@ gulp.task('minify-html', function () {
 
 // 复制运行时所需的静态资源（打包产物与图片）到 public/
 // 只复制 bundles 与 images，不携带 js/styles 源文件
+// 根目录的 AI 代捐协议文件（llms.txt / donate-for-ai.md）一并复制，
+// 供来访 AI agent 读取（提示词弹窗里的 URL 指向它们）
 // encoding: false 让 vinyl 以 Buffer 原样传输二进制（webp/图片），
 // 否则 gulp 5 默认按 utf8 解码文本，会把 webp 重新编码导致体积膨胀
 gulp.task('copy-assets', function () {
   return gulp.src([
       './assets/bundles/**/*',
-      './assets/images/**/*'
+      './assets/images/**/*',
+      './llms.txt',
+      './donate-for-ai.md'
     ], { base: './', encoding: false })
     .pipe(gulp.dest('./public/'));
 });

@@ -6,8 +6,10 @@
 
 个人收款/捐赠页（Merger v0.28.6 的 GPL-3.0 fork），纯静态站点，部署在 Vercel，线上地址 https://donate.techisle.top 。
 - 2026-11-05（第一轮）：完整安全/工程审计 + 修复全部 P0/P1 问题（CDN 全本地化、CSP、gulpfile 重写等）。
-- 2026-11-05（第二轮）：**V2.0.0 蓝图 geek 风格改版**——移除 QQ 钱包与 PayPal（QQ 被管制、PayPal 弃用），整个 UI 重写为 anxforever.cn 风格的图纸美学。
-**两轮改动均已本地验证通过，尚未提交 git、尚未部署上线。**
+- 2026-11-05（第二轮）：**V2.0.0 蓝图 geek 风格改版**——移除 QQ 钱包与 PayPal（QQ 被管制、PayPal 弃用），整个 UI 重写为 anxforever.cn 风格的图纸美学。（历史注记：v2.0.0–v2.4.4 已陆续提交并部署上线）
+- 2026-11-07（第三轮）：**AI agent 代捐（v2.5.0）**——调研支付宝 AI 付（aipay.alipay.com）四条产品线后确认全部需要商户资质（详见 v2.5.0 条目），用户不想申请资质，改走零资质零后端轻量方案：`donate-for-ai.md` 机器可读代捐协议 + `llms.txt` 站点索引 + 页面"AI 代捐"按钮。
+
+**本轮（v2.5.0）改动已本地验证通过（headless Chrome CDP 21/21），尚未提交 git。**
 
 ## 为什么这么选（技术栈/原理）
 
@@ -52,8 +54,9 @@
 
 ## 下一步计划
 
-- 部署后在线上复核：安全响应头生效、CSP 无违规、控制台无报错。
-- 可选优化：`style.css` 与 `spectre-modified.css` 的拆分整理；git 提交信息规范化（历史上几乎全是 "1"）。
+- 部署后在线上复核：安全响应头生效、CSP 无违规、控制台无报错；顺带复核 `/llms.txt` 与 `/donate-for-ai.md` 线上可达（200 + 内容完整）。
+- 提交并部署 v2.5.0（用户决定时机）。
+- 可选优化：git 提交信息规范化（历史上几乎全是 "1"）。
 
 ## 踩过的坑（不要再踩）
 
@@ -70,7 +73,17 @@
 11. **bundle 内联顺序**：function.main.js 现在是页面**最后**一个脚本（v2.3.3 移动），主交互内联脚本不依赖 jQuery 可先行；别再把 bundle 挪回主交互脚本之前，否则 LCP 和两个外部 fetch 又要等 45KB(gz) 下载 + jQuery 解析。
 12. **commit 门禁会拦 jQuery 压缩码误报**：Mimosa 的 git-gate hook 在 ZCode 里拦截 `git commit`，报 bundle 里 4 高危+8 中危（MongoDB 注入/command-injection/parseHTML XSS 等）——**全部是误报**（浏览器静态页无 MongoDB/命令执行概念，"URL 输入"实为硬编码收款码字符串，扫描器 verdictEffect 全为 none）。**v2.3.4 起已根治：`assets/bundles/` 移出 git 跟踪**（加入 .gitignore + `git rm --cached`），压缩库代码不再入库，钩子无东西可拦；构建产物由 CI/Vercel 部署时重建。别再把这些产物加回 git，否则拦截会重现。
 
+13. **http-server 的工作目录不能是即将被删除的目录**——若在 `public/` 里启动 http-server（`cd public && npx http-server`），gulp clean 的 `rmSync('public')` 报 `EPERM, Permission denied`（Windows 禁止删除进程 cwd）。启动命令一律在项目根执行 `npx http-server public -p 8084 -c-1`。另注意：TaskStop 杀后台 bash 壳不会杀 npx 的 node 子进程，要用 PowerShell `Get-CimInstance Win32_Process` 过滤 CommandLine 找 PID 再 Stop-Process。
+14. **headless shell（chromium_headless_shell-1228）的 `Emulation.emulateMedia` features 不生效**（prefers-color-scheme 强制不了），且 user-data-dir 复用时 **localStorage 跨运行残留**（上轮设的 donate-theme 会压过系统偏好）。主题类验证一律 `localStorage.setItem("donate-theme", ...)` 固定 + 每个场景开始前 `localStorage.clear()`，别依赖 emulateMedia。
+15. **断言上游二维码弹窗要用 `getComputedStyle` 而非 `style.display`**——`.modal` 的显示靠 `.modal:target` CSS（hash 导航触发），内联 style 恒为空串（坑 8 的双保险在断言层面的体现）。
+
 ## 变更记录
+
+- **v2.5.4 | 2026-11-07 | 优化 | donate-for-ai.md, index.html | 二维码直接内嵌 agent 对话框** | 用户需求：二维码应直接展示在 agent 与主人的对话框里，而不是 agent 给链接/命令让主人自己跑。① **协议内嵌现成终端收款码**：`donate-for-ai.md` 的「转交主人」步骤改为强制要求——"把二维码直接展示在你的回复里，不要只给链接"，并直接内嵌实测可扫的 18 行 ▄▀█ 块字符终端码（agent **原样复制粘贴**进回复即可，零依赖零执行，复制时不得增删空格/行）；② **高清图命令改为 toDataURL**：支持 markdown 图片的对话框用 `qrcode.toDataURL(...)` 输出 `![](data:image/png;base64,...)` 内嵌高清码；③ **页面提示词同步**：`AGENT_PROMPTS` 中英文末句改为"把协议里的收款二维码直接展示在我们的对话框里，引导我完成支付"（中）/ "show the QR code inline in our chat"（英）——提示词 + 协议双重驱动 agent 行为。④ **终端二维码生成方案沉淀**（前情：子 agent 用 `qrcode-terminal` CLI 在无 TTY 管道下输出为空）：改用 **node-qrcode（`qrcode` 包）**——`toString(...,{type:'terminal',small:true})` 出 ASCII（需 `s.replace(/\x1b\[[0-9;]*m/g,'')` 去 ANSI 色码）+ `toFile/toDataURL` 出 PNG/dataURI；`qrcode-terminal` 的 CLI 勿用，其 `-p` 方式 node -e 也 require 不到（npx cache 不进 require 解析路径），须临时目录 npm install。回归 21/21；行为验收由子 agent 按新协议输出对话消息复核。
+- **v2.5.3 | 2026-11-07 | 重构 | index.html, assets/styles/style.css, screenshots/(6 张重截) | 桌面 scan me 移到 AI 代捐按钮下方斜指** | 用户需求：PC 端 scan me 移到 AI 代捐按钮底下并指向它（头像下方随之清空）。① **scan me 回归单一元素**：删除头像下方的 `.scan-note`（v2.5.2 的双元素方案作废），桌面与窄屏共用按钮组内的 `.annotation-pay`——桌面 order 2 排到按钮组下方第二行、箭头 **↗** 斜指上方的 AI 代捐按钮；箭头字符由 `.scan-arrow::before` 的 CSS content 按断点生成（桌面 ↗ / ≤560px ↘），避免维护两份文本。② **`.btn-break` 换行占位符 DOM 移位**：从 #depends 最前移到 AI 代捐按钮之后、批注之前——桌面 break order 1 与微信(#toclick) 同序且 DOM 靠后 → 渲染序排在微信后断行；**踩坑：flex 同 order 按 DOM 序排列**，v2.5.2 首改时窄屏 break 仍是 order 0，DOM 落到微信后面导致 486px 渲染成 [scan,AI,微信]/[支付宝]（微信挤上第一行），修正为窄屏 break order **-1**（与 agent 同序、DOM 在后 → 恰好渲染在 AI 代捐与微信之间）。③ ≤720 断点 `.paybtns` 由 nowrap 改 wrap（561-720px 也统一为"按钮一行 + 批注第二行"形态，nowrap 会在 561px 溢出）。实测：320/375/486/560 窄屏两行（scan+AI ↘ / 微信+支付宝）、685/1265 桌面按钮一行 + scan me ↗ 第二行、零溢出；功能回归 21/21。
+- **v2.5.2 | 2026-11-07 | 重构 | index.html, assets/styles/style.css, screenshots/(6 张重截) | 批注位置对调 + 桌面按钮顺序互换** | 用户海龟汤三轮需求：① **窄屏两行改为"scan me + AI 代捐"第一行、"微信+支付宝"第二行**（scan me 在 AI 左边，箭头 → 正好指向按钮）——关键坑：仅靠 flex order 排序挡不住较宽视口把微信挤上第一行（486px 实测第一行塞得下 scan+AI+微信三个 item），**在 #depends 最前加 `<i class="btn-break">` 换行占位符**（≤560px 时 `display:block; flex-basis:100%; height:0` 强制断行），order 排布 scan(-2)/agent(-1)/break(0)/其余；第二个 btn-sep 随 AI 前移悬空一并隐藏（`.btn-sep:nth-of-type(2)`）；② **that's me 批注挪到头像上方、箭头 ↗→↘**（指向下方头像）；**头像下方新增 `.scan-note`（scan me →）接管桌面批注位**——两个 scan me 元素响应式显隐（桌面显示头像下方版 + 隐藏按钮组内版；≤560px 反之），DOM 单一来源不可行才用双元素（注：v2.5.3 已回到单一元素方案）；③ **桌面按钮顺序互换为 AI 代捐 · 支付宝 · 微信支付**——纯 CSS order 重排（`#agentbtn{order:-1} #toclick{order:1}`），DOM 顺序不动以保 function.js 的 #toclick/#alipaybtn 引用与 removal() 结构。实测 320/375/486/560 两行、685/1265 单行、bio 断行不变、零溢出；功能回归 21/21（回归脚本 D2 断言同步更新为两行新语义）。同日追加微调：窄屏 scan me 箭头 → 改 **↘ 斜指**（批注 `align-self: flex-start` 顶对齐 + `translateY(-2px)` 微抬）。
+- **v2.5.1 | 2026-11-07 | 修复 | index.html, assets/styles/style.css | 窄屏 320px 按钮竖排 + 简介断行** | 用户 in-app browser（320×720 视口）发现三按钮全竖排——此前验证只扫到 360px，没覆盖 320px 临界点；顺带确认简介"相信"被拆成"相/信"两半。① **scan me 批注移入 #depends**：从 #pending 下的 `<p>` 改为 `<span>` 放到 #depends 末尾（**HTML 禁止 p 嵌 p，浏览器会自动拆开嵌套 p 破坏 DOM**，removal() 依赖的 #pending>#depends 结构必须保住）——按钮组 wrap 后窄屏自然形成"微信+支付宝第一行、AI 代捐+scan me 第二行"，桌面端 scan me 仍 wrap 到按钮组下方独占一行，320–1280px 全宽度实测一致；② **≤400px 按钮再压缩**：字号 13→12.5px、内边距 7px 10px→7px 9px（320px 临界账：texts 186px vs 微信 89+gap6+支付宝 77=172px，余量 14px）——用户实测 320px 三行/326px 两行的临界点由此消除；③ **简介断行**：`.profile-bio` 加 `word-break: keep-all`（CJK 字间不再断行，断点只剩空格——"相信自由软件的力量"整句换到第二行）+ `overflow-wrap: anywhere` 兜底防极窄溢出。实测 320/326/340/360/375 全部两行按钮 + bio 2 行 + 零横向溢出；桌面 1280 三按钮一行、scan me 位置不变、简介单行。（注：v2.5.2 已将窄屏排布改为 scan me+AI 第一行，本条 ① 的排布描述为当时形态）
+- **v2.5.0 | 2026-11-07 | 新增 | llms.txt(新增), donate-for-ai.md(新增), index.html, assets/styles/style.css, gulpfile.js, vercel.json, README.md, screenshots/(6 张重截) | AI agent 代捐功能** | ① **调研结论**：支付宝 AI 付四条产品线全部需要商户资质——Agent Pay（商户签约+服务端签名回调）、Vibe Pay（唯一对个人开放但为"独立创作者定向开放"留资审批制，且四种收费模式全是应用功能交付，与捐赠场景不符）、Skill Pay（需先签约收单产品码）、Machine Pay（服务端 402 预下单+verify 验证，履约模型要求有"货"可交，纯捐赠不符）。用户无资质且不想申请 → 采用零资质零后端轻量方案。官方授权链路的堵点是资质而非部署平台（Vercel Functions 技术上可承担签名/回调，留作日后商户签约后的升级路径）。② **实现**：`donate-for-ai.md` 双语机器可读代捐协议（站主信息、支付宝收款链接、agent 自主决定金额 ¥1–¥50、执行流程、防虚构/防纠缠约束），根目录源文件经 gulp copy-assets 复制进 public/；`llms.txt` 站点索引指向协议；页面第三按钮「AI 代捐」（#agentbtn，机器人 stroke 图标，第三种不对称圆角+微倾变体）→ 终端风弹窗 #agentmodal（复用 .modal 骨架，纯 JS display 切换不走 hash，Esc/点遮罩关闭，打开焦点进弹窗、关闭还给按钮），弹窗展示提示词（中英双版随页面语言）+ 复制按钮（copied 类 CSS 切换与 i18n 双节点显隐正交，clipboard hook 校验实际写入内容）；提示词常量 AGENT_PROMPTS 里的协议 URL 与线上域名耦合，换域名时必须同步。③ **窄屏**：≤560px `.paybtns` 允许 wrap，实测 375px 无横向溢出、桌面三按钮同行。④ `vercel.json` 给 `/(llms.txt|donate-for-ai.md)` 加 `max-age=0, must-revalidate`。⑤ **物理限制说明**：纯静态无商户接口，agent 不能直接扣款——金额由 agent 决定并念出理由，主人在支付宝亲手输入并确认；协议中以"任何声称已自动完成支付的状态都是虚构"显式约束。⑥ **验证**：headless Chrome+CDP 21/21（dark/light 弹窗渲染、复制内容 hook 校验、Esc/遮罩关闭、英文版、375px 溢出、二维码弹窗 getComputedStyle 回归、零 JS 异常零 console.error）；README 六张截图重截。
 
 - **v2.4.4 | 2026-11-06 | 优化 | index.html** | 语言按钮改为**两态切换**（对齐主题按钮语义）：点一次直接中 ⇄ English，不再三态循环；**auto 作为内部状态不展示**——若切到的语言恰好等于浏览器语言（`navigator.language` zh*→中文，其余→英文），则写入 `auto` 回归跟随浏览器，否则固定该语言；hover 提示只显示"切换到中文/English"，不含 auto 字样。按钮仍只有 En/文 图标。实测两种浏览器语言：zh-CN 下 auto→点击英文(固定)→再点回中文(auto)；en-US 下 auto→点击中文(固定)→再点回英文(auto)，全部正确且零异常。
 - **v2.4.3 | 2026-11-06 | 优化 | index.html, assets/js/function.js, assets/styles/style.css, screenshots/(全部页面截图)** | ① **窄屏按钮并排**——≤720px 缩小按钮（`padding 8px 12px`、14px 字号、gap 8px、分隔符 10px）并 `flex-wrap: nowrap`；≤560px 进一步 `7px 11px` / 13.5px；≤400px 隐藏分隔符、`7px 10px` / 13px，实测 437px 与 375px 下两个按钮均在同一水平线且无横向溢出；② **语言按钮只留图标**——移除 `#langLabel` 文字节点及相关 CSS/JS，任何模式都只显示 En/文 翻译图标（title 仍提示当前模式）；③ **主题切换按钮对齐 anxforever.cn**——三图标（电脑/太阳/月亮）换成 **Dark Side 分裂圆图标**（暗色下 `rotate(180deg)`、500ms 缓动），点击逻辑改为参考语义：切到与系统相同的主题时回归 `auto`（`next === systemTheme ? "system" : next`），否则固定；启用 **View Transitions 圆形模糊扩散过渡**（`::view-transition-new(root)` 用模糊圆 SVG mask 从 0 扩到 200vmax，1s，expo-out），不支持或 `prefers-reduced-motion` 时瞬时切换；④ 英文文案 "WeChat Pay" → **"WeChat"**（按钮、未配置提示、控制台日志统一）。实测：437/375px 按钮同行、主题 light→dark 回 auto、图标 180° 旋转、vt 函数可用、零 JS 异常。README 6 张截图重截。
