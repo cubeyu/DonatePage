@@ -218,8 +218,10 @@ function removal() {
 // Onclick Function Part Ends
 
 // Fill in tile and subtitle
-document.getElementById("name").innerHTML = finaltitle;
-document.getElementById("description").innerHTML = finalsub;
+// v2.5.13：#name/#description 隐藏元素已从 HTML 移除（merger 遗留死路径，值从未展示过）；
+// finaltitle/finalsub 变量保留供三语分支赋值，此后无消费方
+// document.getElementById("name").innerHTML = finaltitle;
+// document.getElementById("description").innerHTML = finalsub;
 
 // Copyright console log copied from https://github.com/MoePlayer/APlayer/. Thank you.
 console.log(`${'\n'} %c Merger 0.28.6 %c https://github.com/cubeyu/DonatePage ${'\n'}`, 'color: #fadfa3; background: #030307; padding:5px 0;', 'background: #fadfa3; padding:5px 0;');

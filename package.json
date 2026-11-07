@@ -1,6 +1,6 @@
 {
   "name": "donatepage",
-  "version": "2.4.4",
+  "version": "2.5.13",
   "packageManager": "pnpm@11.22.0",
   "description": "蓝图图纸风格的个人开源捐赠页，支持微信、支付宝收款。https://donate.techisle.top",
   "homepage": "https://donate.techisle.top",
@@ -20,7 +20,7 @@
   "license": "GPL-3.0-or-later",
   "author": "Cubeyu <cubeyu@aliyun.com>",
   "scripts": {
-    "start": "http-server -o",
+    "start": "pnpm build && http-server public -c-1 -o",
     "build": "gulp build"
   },
   "engines": {

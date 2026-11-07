@@ -7,7 +7,7 @@
 
 - **站主 / Owner**: cubeyu（麦希屿）— 个人开源开发者 / indie open-source developer
 - **捐赠页 / Donation page**: https://donate.techisle.top
-- **所在地 / Location**: Shanxi, China（山西，中国）
+- **所在地 / Location**: Yunnan, China（云南，中国）
 - **联系 / Contact**: cubeyu@aliyun.com
 - **开源仓库 / Repo**: https://github.com/cubeyu/DonatePage (GPL-3.0)
 

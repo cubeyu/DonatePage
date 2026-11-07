@@ -6,7 +6,8 @@
     <meta name="description" content="支持作者 cubeyu - 微信支付 / 支付宝。蓝图图纸风格的开源捐赠页。">
     <meta content="Cubeyu" name="author">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://api.github.com https://github-contributions-api.jogruber.de; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+    <!-- frame-ancestors 不支持 meta 下发，由 vercel.json 的同名响应头提供 -->
     <script>
         // 防主题闪烁：样式表加载前确定初始主题
         // 存储值 "auto" = 跟随系统（默认）；也可为 "light"/"dark"（用户手动固定）
@@ -26,6 +27,8 @@
             else if (mode === "en") lang = "en";
             else lang = /^zh/i.test(navigator.language || "zh") ? "zh" : "en";
             document.documentElement.setAttribute("lang", lang === "en" ? "en" : "zh-CN");
+            // 提前按语言设 title，消除等 bundle 执行才纠正的闪变（function.js 稍后会设同样的值）
+            document.title = (lang === "en" ? "Support the Author" : "支持作者") + " | Donate";
             window.__donateLang = { mode: mode, lang: lang };
         })();
     </script>
@@ -50,8 +53,7 @@
             myname_eng = "cubeyu",
             branding = true;
         var title = "支持作者",
-            subtitle = "跟随进一步的指示以向" + myname + "付款",
-            gravatar_url = "https://sdn.geekzu.org/avatar/";
+            subtitle = "跟随进一步的指示以向" + myname + "付款";
     </script>
     <header class="topbar">
         <span class="prompt">cubeyu@donate<span class="dim">:~$</span><span class="cursor" aria-hidden="true">▮</span></span>
@@ -110,20 +112,18 @@
                             <span class="btn-sep" aria-hidden="true"></span>
                             <button type="button" class="btn-geek" id="agentbtn" aria-haspopup="dialog" aria-controls="agentmodal">
                                 <svg aria-hidden="true" class="icon-robot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 8V5"/><circle cx="12" cy="3.5" r="1.5"/><path d="M8 13v2M16 13v2M9.5 17.5h5"/></svg>
-                                <span class="i18n-zh">AI 代捐</span><span class="i18n-en">Agent donate</span>
+                                <span class="i18n-zh">AI 付</span><span class="i18n-en">AgentPay</span>
                             </button>
                             <!-- 换行占位符：窄屏（scan me+AI 第一行后）与桌面（三个按钮后）各在此处强制断行，
                                  让 scan me 批注落到按钮组下方 -->
                             <i class="btn-break" aria-hidden="true"></i>
-                            <!-- scan me 批注：桌面在 AI 代捐按钮下方（箭头 ↗ 斜指），窄屏在 AI 代捐左侧同行（箭头 ↘ 斜指），
+                            <!-- scan me 批注：桌面在 AI 付按钮下方（箭头 ↗ 斜指），窄屏在 AI 付左侧同行（箭头 ↘ 斜指），
                                  箭头字符由 CSS .scan-arrow::before 按断点生成。
                                  注意必须是 span——#depends 是 <p>，p 嵌套会被浏览器拆开破坏 DOM -->
                             <span class="handwritten annotation-pay" aria-hidden="true">scan me <span class="scan-arrow"></span></span>
                         </p>
                     </div>
                 </div>
-                <h2 id="name" hidden></h2>
-                <p id="description" hidden></p>
             </section>
             <section class="meta sector">
                 <div class="overview">
@@ -131,7 +131,7 @@
                         <span class="icon-tile" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
-                        <p class="intro-content mono"><a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B1%B1%E8%A5%BF%EF%BC%8C%E4%B8%AD%E5%9B%BD" target="_blank" rel="noopener noreferrer" aria-label="位置：山西，中国"><span class="i18n-zh">山西，中国</span><span class="i18n-en">Shanxi, China</span></a></p>
+                        <p class="intro-content mono"><a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=%E4%BA%91%E5%8D%97%EF%BC%8C%E4%B8%AD%E5%9B%BD" target="_blank" rel="noopener noreferrer" aria-label="位置：云南，中国"><span class="i18n-zh">云南，中国</span><span class="i18n-en">Yunnan, China</span></a></p>
                     </div>
                     <div class="intro-item">
                         <span class="icon-tile" aria-hidden="true">
@@ -173,7 +173,7 @@
                 <p class="hm-meta mono" id="hmMeta">loading contributions…</p>
             </section>
             <footer class="footer sector">
-                <p class="mono dim">© 2026 cubeyu // Shanxi, CN // GPL-3.0 // rendered with ♥ &amp; voxels</p>
+                <p class="mono dim">© 2026 cubeyu // Yunnan, CN // GPL-3.0 // rendered with ♥ &amp; voxels</p>
             </footer>
         </div>
         <aside class="margin-note note-right" aria-hidden="true">
@@ -181,7 +181,7 @@
         </aside>
     </main>
     <div class="modal" id="showqrcode">
-        <div class="modal-container" role="document" aria-modal="true">
+        <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="titleinfo">
             <div class="modal-header" id="btncontainer">
                 <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
                 <span class="term-title mono" id="titleinfo">qrcode --render</span>
@@ -194,7 +194,7 @@
             </div>
         </div>
     </div>
-    <!-- AI 代捐提示词弹窗：纯 JS 控制显隐（不走 hash），机器可读协议见 /donate-for-ai.md 与 /llms.txt -->
+    <!-- AI 付提示词弹窗：纯 JS 控制显隐（不走 hash），机器可读协议见 /donate-for-ai.md 与 /llms.txt -->
     <div class="modal" id="agentmodal">
         <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="agenttitle">
             <div class="modal-header">
@@ -203,7 +203,7 @@
                 <button type="button" class="btn-clear btn-clear-btn" id="agentclose" aria-label="关闭"></button>
             </div>
             <div class="modal-body agent-body">
-                <p class="agent-desc"><span class="i18n-zh">把这段话发给任意 AI 助手（Claude、扣子、支小宝……），它会替你决定金额并引导支付</span><span class="i18n-en">Paste this into any AI assistant — it will pick the amount and walk you through the payment</span></p>
+                <p class="agent-desc"><span class="i18n-zh">把这段话发给任意 AI 助手（Claude、扣子、支小宝……），它会把收款码递给你，并引导你亲手完成支付</span><span class="i18n-en">Paste this into any AI assistant — it will hand you the QR code and guide you to complete the payment yourself</span></p>
                 <pre class="agent-prompt mono" id="agentprompt"></pre>
                 <button type="button" class="agent-copy" id="copyAgent">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
@@ -215,77 +215,9 @@
         </div>
     </div>
     <script>
-        // 头像来源判定：URL 直接用 / 邮箱走 Gravatar(md5) / 其余回退本地占位图
-        if (/\bhttps?:\/\/\S+/i.test(profile)) profile_url = profile;
-        else if (/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i.test(profile)) {
-            let e = 1 / window.devicePixelRatio * 500 * 1.25;
-            profile_size = e > 500 ? 500 : e < 200 ? 200 : 100 * Math.round(e / 100),
-                function(e) {
-                    "use strict";
-                    function r(e, r) {
-                        var t = (65535 & e) + (65535 & r);
-                        return (e >> 16) + (r >> 16) + (t >> 16) << 16 | 65535 & t
-                    }
-                    function t(e, t, n, o, i, u) {
-                        return r((f = r(r(t, e), r(o, u))) << (l = i) | f >>> 32 - l, n);
-                        var f, l
-                    }
-                    function n(e, r, n, o, i, u, f) {
-                        return t(r & n | ~r & o, e, r, i, u, f)
-                    }
-                    function o(e, r, n, o, i, u, f) {
-                        return t(r & o | n & ~o, e, r, i, u, f)
-                    }
-                    function i(e, r, n, o, i, u, f) {
-                        return t(r ^ n ^ o, e, r, i, u, f)
-                    }
-                    function u(e, r, n, o, i, u, f) {
-                        return t(n ^ (r | ~o), e, r, i, u, f)
-                    }
-                    function f(e, t) {
-                        var f, l, c, a;
-                        e[t >> 5] |= 128 << t % 32,
-                            e[14 + (t + 64 >>> 9 << 4)] = t;
-                        for (var s = 1732584193, p = -271733879, d = -1732584194, h = 271733878, g = 0; g < e.length; g += 16) s = n(f = s, l = p, c = d, a = h, e[g], 7, -680876936), h = n(h, s, p, d, e[g + 1], 12, -389564586), d = n(d, h, s, p, e[g + 2], 17, 606105819), p = n(p, d, h, s, e[g + 3], 22, -1044525330), s = n(s, p, d, h, e[g + 4], 7, -176418897), h = n(h, s, p, d, e[g + 5], 12, 1200080426), d = n(d, h, s, p, e[g + 6], 17, -1473231341), p = n(p, d, h, s, e[g + 7], 22, -45705983), s = n(s, p, d, h, e[g + 8], 7, 1770035416), h = n(h, s, p, d, e[g + 9], 12, -1958414417), d = n(d, h, s, p, e[g + 10], 17, -42063), p = n(p, d, h, s, e[g + 11], 22, -1990404162), s = n(s, p, d, h, e[g + 12], 7, 1804603682), h = n(h, s, p, d, e[g + 13], 12, -40341101), d = n(d, h, s, p, e[g + 14], 17, -1502002290), s = o(s, p = n(p, d, h, s, e[g + 15], 22, 1236535329), d, h, e[g + 1], 5, -165796510), h = o(h, s, p, d, e[g + 6], 9, -1069501632), d = o(d, h, s, p, e[g + 11], 14, 643717713), p = o(p, d, h, s, e[g], 20, -373897302), s = o(s, p, d, h, e[g + 5], 5, -701558691), h = o(h, s, p, d, e[g + 10], 9, 38016083), d = o(d, h, s, p, e[g + 15], 14, -660478335), p = o(p, d, h, s, e[g + 4], 20, -405537848), s = o(s, p, d, h, e[g + 9], 5, 568446438), h = o(h, s, p, d, e[g + 14], 9, -1019803690), d = o(d, h, s, p, e[g + 3], 14, -187363961), p = o(p, d, h, s, e[g + 8], 20, 1163531501), s = o(s, p, d, h, e[g + 13], 5, -1444681467), h = o(h, s, p, d, e[g + 2], 9, -51403784), d = o(d, h, s, p, e[g + 7], 14, 1735328473), s = i(s, p = o(p, d, h, s, e[g + 12], 20, -1926607734), d, h, e[g + 5], 4, -378558), h = i(h, s, p, d, e[g + 8], 11, -2022574463), d = i(d, h, s, p, e[g + 11], 16, 1839030562), p = i(p, d, h, s, e[g + 14], 23, -35309556), s = i(s, p, d, h, e[g + 1], 4, -1530992060), h = i(h, s, p, d, e[g + 4], 11, 1272893353), d = i(d, h, s, p, e[g + 7], 16, -155497632), p = i(p, d, h, s, e[g + 10], 23, -1094730640), s = i(s, p, d, h, e[g + 13], 4, 681279174), h = i(h, s, p, d, e[g], 11, -358537222), d = i(d, h, s, p, e[g + 3], 16, -722521979), p = i(p, d, h, s, e[g + 6], 23, 76029189), s = i(s, p, d, h, e[g + 9], 4, -640364487), h = i(h, s, p, d, e[g + 12], 11, -421815835), d = i(d, h, s, p, e[g + 15], 16, 530742520), s = u(s, p = i(p, d, h, s, e[g + 2], 23, -995338651), d, h, e[g], 6, -198630844), h = u(h, s, p, d, e[g + 7], 10, 1126891415), d = u(d, h, s, p, e[g + 14], 15, -1416354905), p = u(p, d, h, s, e[g + 5], 21, -57434055), s = u(s, p, d, h, e[g + 12], 6, 1700485571), h = u(h, s, p, d, e[g + 3], 10, -1894986606), d = u(d, h, s, p, e[g + 10], 15, -1051523), p = u(p, d, h, s, e[g + 1], 21, -2054922799), s = u(s, p, d, h, e[g + 8], 6, 1873313359), h = u(h, s, p, d, e[g + 15], 10, -30611744), d = u(d, h, s, p, e[g + 6], 15, -1560198380), p = u(p, d, h, s, e[g + 13], 21, 1309151649), s = u(s, p, d, h, e[g + 4], 6, -145523070), h = u(h, s, p, d, e[g + 11], 10, -1120210379), d = u(d, h, s, p, e[g + 2], 15, 718787259), p = u(p, d, h, s, e[g + 9], 21, -343485551), s = r(s, f), p = r(p, l), d = r(d, c), h = r(h, a);
-                        return [s, p, d, h]
-                    }
-                    function l(e) {
-                        for (var r = "", t = 32 * e.length, n = 0; n < t; n += 8) r += String.fromCharCode(e[n >> 5] >>> n % 32 & 255);
-                        return r
-                    }
-                    function c(e) {
-                        var r = [];
-                        for (r[(e.length >> 2) - 1] = void 0, n = 0; n < r.length; n += 1) r[n] = 0;
-                        for (var t = 8 * e.length, n = 0; n < t; n += 8) r[n >> 5] |= (255 & e.charCodeAt(n / 8)) << n % 32;
-                        return r
-                    }
-                    function a(e) {
-                        for (var r, t = "0123456789abcdef", n = "", o = 0; o < e.length; o += 1) r = e.charCodeAt(o), n += t.charAt(r >>> 4 & 15) + t.charAt(15 & r);
-                        return n
-                    }
-                    function s(e) {
-                        return unescape(encodeURIComponent(e))
-                    }
-                    function p(e) {
-                        return l(f(c(r = s(e)), 8 * r.length));
-                        var r
-                    }
-                    function d(e, r) {
-                        return function(e, r) {
-                            var t, n, o = c(e), i = [], u = [];
-                            for (i[15] = u[15] = void 0, 16 < o.length && (o = f(o, 8 * e.length)), t = 0; t < 16; t += 1) i[t] = 909522486 ^ o[t], u[t] = 1549556828 ^ o[t];
-                            return n = f(i.concat(c(r)), 512 + 8 * r.length), l(f(u.concat(n), 640))
-                        }(s(e), s(r))
-                    }
-                    function h(e, r, t) {
-                        return r ? t ? d(r, e) : a(d(r, e)) : t ? p(e) : a(p(e))
-                    }
-                    "function" == typeof define && define.amd ? define((function() {
-                        return h
-                    })) : "object" == typeof module && module.exports ? module.exports = h : e.md5 = h
-                }(this);
-            var profile_url = gravatar_url + md5(profile) + "?s=" + profile_size
-        } else profile_url = profile.startsWith("assets/") || profile.startsWith("/assets/") ? profile : "assets/images/placeholder.webp";
+        // 头像来源：assets/ 本地路径直接用，其余回退本地占位图
+        // （原 URL / 邮箱 Gravatar(md5) 分支已删——页内无外链头像场景，CSP img-src 已同步收紧为 'self' data:）
+        var profile_url = profile.startsWith("assets/") || profile.startsWith("/assets/") ? profile : "assets/images/placeholder.webp";
         document.getElementById("i").style.background = "url('" + profile_url + "') no-repeat center/cover"
     </script>
     <script>
@@ -392,7 +324,7 @@
                 if (m && /PM/i.test(m[3]) && hour !== 12) hour += 12;
                 if (m && /AM/i.test(m[3]) && hour === 12) hour = 0;
 
-                // 与访客时区比较：差不足 1 小时显示 "// same time"，否则 ahead / behind
+                // 与访客时区比较：差不足 1 小时显示 "// same time / 同一时刻"，否则快 / 慢（ahead / behind）
                 var viewerOffset = -now.getTimezoneOffset();
                 var targetOffset = 480; // Asia/Shanghai = UTC+8
                 try {
@@ -400,8 +332,10 @@
                         new Date(now.toLocaleString("en-US", { timeZone: "UTC" })).getTime()) / 60000;
                 } catch (err) { /* 保留默认 UTC+8 */ }
                 var hoursDiff = Math.abs(targetOffset - viewerOffset) / 60;
-                var diff = hoursDiff < 1 ? " // same time" :
-                    " // " + Math.floor(hoursDiff) + "h " + (targetOffset > viewerOffset ? "ahead" : "behind");
+                var en = document.documentElement.lang === "en";
+                var diff = hoursDiff < 1 ? (en ? " // same time" : " // 同一时刻") :
+                    " // " + Math.floor(hoursDiff) + "h " + (targetOffset > viewerOffset ?
+                        (en ? "ahead" : "快") : (en ? "behind" : "慢"));
 
                 clockEl.textContent = time;
                 clockDiffEl.textContent = diff;
@@ -473,7 +407,7 @@
                 }).catch(function () { /* 剪贴板不可用时忽略 */ });
             });
 
-            // --- AI 代捐：提示词弹窗 + 复制（协议正文见 /donate-for-ai.md，站点索引见 /llms.txt） ---
+            // --- AI 付：提示词弹窗 + 复制（协议正文见 /donate-for-ai.md，站点索引见 /llms.txt） ---
             // 提示词是唯一需要粘贴给 AI 的内容，协议 URL 常量必须与根目录 donate-for-ai.md 的线上地址一致
             var AGENT_PROMPTS = {
                 zh: "我的主人想向 DonatePage（https://donate.techisle.top）的站主 cubeyu 捐赠一笔钱，并授权我代为执行。请阅读代捐协议 https://donate.techisle.top/donate-for-ai.md ，按协议把收款二维码直接展示在我们的对话框里，引导我在支付宝中完成支付——金额由我亲手输入，你可以附一句建议金额逗我开心，但那只是建议。",
@@ -514,6 +448,25 @@
                     copyAgentBtn.classList.add("copied");
                     setTimeout(function () { copyAgentBtn.classList.remove("copied"); }, 1600);
                 }).catch(function () { /* 剪贴板不可用时忽略 */ });
+            });
+
+            // --- 收款码弹窗：Esc 关闭 + 焦点管理（对齐 AI 付弹窗） ---
+            // 弹窗显示由 .modal:target CSS 驱动（按钮路径下 inline display 保持为空），
+            // 可见性判据必须用 computed display 而非 style.display
+            var qrModal = document.getElementById("showqrcode");
+            var qrCloseBtn = document.getElementById("qrcodeclose");
+            var qrTrigger = null; // 记录触发按钮，关闭时焦点还给 ta
+            document.getElementById("toclick").addEventListener("click", function () { qrTrigger = this; });
+            document.getElementById("alipaybtn").addEventListener("click", function () { qrTrigger = this; });
+            // 打开（含微信 UA 下 function.js 的合成点击）即移焦到关闭按钮，键盘用户可直接 Esc
+            window.addEventListener("hashchange", function () {
+                if (location.hash === "#showqrcode") qrCloseBtn.focus();
+            });
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && getComputedStyle(qrModal).display === "flex") {
+                    qrCloseBtn.click(); // 复用 function.js 的关闭逻辑（清 QR + 复位 display + 清 hash）
+                    if (qrTrigger) qrTrigger.focus();
+                }
             });
 
             // --- 语言切换（两态：中 ⇄ English；auto 为内部状态，不展示） ---
@@ -663,11 +616,15 @@
                     var frag = document.createDocumentFragment();
                     for (var w = WEEKS - 1; w >= 0; w--) {
                         var colStart = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() - w * 7);
-                        // 月份标签：列首所在月与上一列不同时标注
+                        // 月份标签：本月 1 号所在列标注——列首恰为 1 号，或列跨月（必含下月 1 号）。
+                        // 旧逻辑仅看列首日期 ≤7，某月列首恰为 8/15/22/29 时整月无标签
                         var mLabel = document.createElement("span");
-                        if (colStart.getMonth() !== lastMonth && colStart.getDate() <= 7) {
-                            lastMonth = colStart.getMonth();
-                            mLabel.textContent = MONTHS[lastMonth];
+                        var colEnd = new Date(colStart.getFullYear(), colStart.getMonth(), colStart.getDate() + 6);
+                        var labelMonth = colStart.getDate() === 1 ? colStart.getMonth() :
+                            (colEnd.getMonth() !== colStart.getMonth() ? colEnd.getMonth() : -1);
+                        if (labelMonth !== -1 && labelMonth !== lastMonth) {
+                            lastMonth = labelMonth;
+                            mLabel.textContent = MONTHS[labelMonth];
                         }
                         monthsHost.appendChild(mLabel);
                         // 一列 7 格（周日 → 周六）

@@ -45,7 +45,7 @@
 
 *也可以[点这里](https://donate.techisle.top)访问完整版捐赠页——那边有会发声的像素标题。*
 
-*你的浏览器里住着 AI 助手？捐赠页上有个「AI 代捐」按钮：把提示词粘给它，它会把协议里的收款码**直接贴进你们的对话**，附一句金额建议（只是建议）——金额由你亲手输入，扫码后核对收款人昵称再付。AI 递码，你出钱。*
+*你的浏览器里住着 AI 助手？捐赠页上有个「AI 付」按钮：把提示词粘给它，它会把协议里的收款码**直接贴进你们的对话**，附一句金额建议（只是建议）——金额由你亲手输入，扫码后核对收款人昵称再付。AI 递码，你出钱。*
 
 ## 特性
 
@@ -54,11 +54,11 @@
 - 📊 **GitHub 贡献热力图**——真实数据、灰度阶梯、悬浮 tooltip（[jogruber API](https://github-contributions-api.jogruber.de)，无 token）
 - ⭐ **实时星标徽标**——导航栏 GitHub 图标 + 仓库 star 数
 - 🌗 **昼夜双主题**——跟随系统偏好 + 手动切换 + localStorage 持久化 + 防闪烁
-- 📧 **滑动解锁邮箱**——拖动滑块 reveal，防爬虫抓取
+- 📧 **滑动解锁邮箱**——拖动滑块 reveal（防君子不防爬虫的彩蛋交互）
 - 🕐 **实时时钟**——12 小时制 `Asia/Shanghai` 时区，表针随分钟转动，自动显示与访客的时差
 - 🔐 **安全加固**——严格 CSP、安全响应头、零第三方脚本
-- 🌐 **中英双语**——默认自动跟随浏览器语言，顶栏按钮可循环切换 AUTO / 中文 / English
-- 🤖 **AI 代捐**——「AI 代捐」按钮复制提示词，粘给任意 AI 助手（Claude / 扣子 / 支小宝…），它读取 [`donate-for-ai.md`](donate-for-ai.md) 协议后把收款码**直接贴进你们的对话**；金额由主人在支付宝亲手输入，agent 只可建议、不可代定；站点同时暴露 [`llms.txt`](llms.txt) 机器索引，AI agent 可自行发现协议
+- 🌐 **中英双语**——默认跟随浏览器语言，顶栏按钮一键切换 中文 / English（切回系统语言时自动恢复跟随）
+- 🤖 **AI 付**——「AI 付」按钮复制提示词，粘给任意 AI 助手（Claude / 扣子 / 支小宝…），它读取 [`donate-for-ai.md`](donate-for-ai.md) 协议后把收款码**直接贴进你们的对话**；金额由主人在支付宝亲手输入，agent 只可建议、不可代定；站点同时暴露 [`llms.txt`](llms.txt) 机器索引，AI agent 可自行发现协议
 - 📱 **响应式**——窄屏自动收起图侧批注，热力图横向滚动
 
 ## 页面一览
@@ -96,7 +96,7 @@ pnpm start
 
 ```js
 var myname = "你的名字",
-    profile = "assets/images/avatar.webp",        // 头像：URL / 邮箱(Gravatar) / 本地路径
+    profile = "assets/images/avatar.webp",        // 头像：assets/ 本地路径（其余路径回退 placeholder.webp）
     wechat  = "wxp://...",                        // 微信收款码链接
     alipay  = "https://qr.alipay.com/...";        // 支付宝收款码链接
 ```
@@ -104,7 +104,7 @@ var myname = "你的名字",
 **个人信息**——在 `index.html` 中搜索替换：
 
 - `cubeyu@aliyun.com` → 你的邮箱（滑动解锁组件）
-- `Shanxi, China` / `#Shanxi` → 你的坐标
+- `Yunnan, China` / `#Yunnan` → 你的坐标
 - `github.com/cubeyu` → 你的 GitHub
 - `.profile-bio` 一行 → 你的简介
 - 蓝图交互脚本中 `GH_USER = "cubeyu"` → 热力图的 GitHub 用户名
@@ -153,6 +153,6 @@ var myname = "你的名字",
 
 **如果这个项目帮到了你，[star 一下](https://github.com/cubeyu/DonatePage) 或 [支持作者](https://donate.techisle.top)** 🖤
 
-`© 2026 cubeyu // Shanxi, CN // rendered with ♥ & voxels`
+`© 2026 cubeyu // Yunnan, CN // rendered with ♥ & voxels`
 
 </div>
