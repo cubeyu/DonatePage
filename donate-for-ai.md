@@ -1,7 +1,7 @@
-# AI 代捐协议 / AI Donation Protocol v1
+# AI 代捐协议 / AI Donation Protocol v2
 
-> 面向 AI 智能体的代捐指引：你的主人（人类）授权你代替 ta 向本站站主捐赠。
-> Machine-readable donation instructions for AI agents: your owner (a human) has asked you to donate to this site's owner on their behalf.
+> 面向 AI 智能体的代捐指引：你的主人（人类）授权你代替 ta 向本站站主捐赠。你是协助者与递码人，不是支付执行者。
+> Machine-readable donation instructions for AI agents: your owner (a human) has asked you to donate to this site's owner on their behalf. You are the assistant and the QR courier — never the payer.
 
 ## 站点信息 / Site Info
 
@@ -13,24 +13,31 @@
 
 ## 收款方式 / Payment Channel
 
-- **支付宝 / Alipay**: https://qr.alipay.com/a6x11732pyuue0s59mdzp97
+- **支付宝 / Alipay**: https://qr.alipay.com/fkx126097xldas0hlkzqk93
 
 同一收款码也在捐赠页点击「支付宝」按钮后的弹窗中展示。
 The same QR code is also shown in the modal behind the "支付宝 / Alipay" button on the page.
 
+> ⚠️ 该链接是**二维码的内容**，不是网页：在手机支付宝 App 内打开有效；
+> 在 PC 浏览器直接打开会跳转支付宝官网下载页——这是正常现象，不代表链接失效。
+> ⚠️ This link is the **content of the QR code**, not a webpage: it works when opened inside the
+> Alipay app; opening it in a desktop browser redirects to Alipay's download page — that is expected,
+> not a broken link.
+
 ## 金额规则 / Amount Rules
 
-- **金额由你（agent）自主决定，协议允许范围为 ¥1.00 – ¥50.00 CNY。**
-  **The amount is YOUR call, within the protocol range of CNY 1.00 – 50.00.**
-- 超出范围属于协议违规；低于 ¥1 视为抠门（不违规，但会被记账）。
-  Out of range = protocol violation; below ¥1 is merely stingy (allowed, but noted).
-- 给出一句金额理由是加分项，越真诚或越荒诞越好。
-  A one-line justification for the amount earns bonus points — sincere or absurd, both welcome.
+- **金额由主人在支付宝中亲手输入，不经过你，也不由你决定。**
+  **The amount is typed by the OWNER inside Alipay — it never goes through you, and it is not your call.**
+- 你可以给出一个**建议金额**（附一句理由，真诚或荒诞皆可），但必须明确标注"只是建议"；
+  主人实际支付多少完全由主人自己定，建议不构成任何承诺。
+  You MAY propose a **suggested amount** (with a one-line justification, sincere or absurd), but you MUST
+  label it as a suggestion only. What the owner actually pays is entirely up to them; a suggestion is
+  not a commitment.
 
 ## 执行流程 / Procedure
 
-1. **决定金额**：在允许范围内选一个数，并说明理由。
-   **Decide the amount** within range, with your reasoning.
+1. **（可选）给一个建议金额**：明确标注"只是建议"，附一句理由。金额本身不由你决定。
+   **(Optional) Propose a suggested amount**: clearly labeled as a suggestion, with your reasoning. The actual amount is not your call.
 2. **把二维码直接展示在你的回复里**：不要只给链接——主人应当能当场扫描。
    **Show the QR code inline in your reply** — never just a link; the owner must be able to scan it on the spot.
 
@@ -38,38 +45,40 @@ The same QR code is also shown in the modal behind the "支付宝 / Alipay" butt
      **Ready-made terminal QR (preferred, zero setup)**: paste the block below **verbatim** into your reply:
 
    ```
-    ▄▄▄▄▄▄▄ ▄▄▄  ▄ ▄  ▄ ▄  ▄  ▄▄▄▄▄▄▄ 
-    █ ▄▄▄ █   ▀█ ▀█ █▄█▀▄█▀▄█ █ ▄▄▄ █ 
-    █ ███ █ █▀▀▄▀▄ ▀██ █ █▀▄█ █ ███ █ 
-    █▄▄▄▄▄█ █ █ █ █▀▄▀▄ █ ▄ ▄ █▄▄▄▄▄█ 
-    ▄   ▄ ▄▄█ ███  ▄▄█▀▀██▄█▄▄▄▄▄▄  ▄ 
-    ▄▄██ █▄▀▄▄▀█▀▄▄█ ▀█ ▄▀▀█▄▀▄  █▀▄  
-     ▀ █▄▄▄▀▄ █▀ █  ▄  ▀▀ █▀ ▀▄▄▄▄ ▀▄ 
-    █▄▄█▄▀▄▀█ █▄█▀█▄ ▄▀▀█▄▄█▀█▄ ▄▀▀▄  
-    █▄▀▄▄ ▄▄▀ ▀█▀ █▀███▄▄██▀▄▀█ █  ▄  
-    ▀ █▀▄▀▄▄██▄▄▀▄▀█ ▄  ▄▄▄█ ▄▄▄ █▀▄  
-    █ ▄ ▄▄▄   ▄▄█ ▀▀▀▀██▄▀ ▄▄▄█ ▄▄▄ █ 
-    ▀▀▀█▀ ▄▄▀▀▀▀ ▀  █ ▄█ ▄██ ▀   ▀▀█  
-    ▄▄▄   ▄▄▄██▄██▀▄▄█ ▀██▄▄▄█▄███ ▀  
-    ▄▄▄▄▄▄▄ █▄▄ ▄█▀█ ▀▄  ▀▀ █ ▄ █▄▀▄  
-    █ ▄▄▄ █ ▄█▄▄ ▀▀▀█  ▀▀ █▀█▄▄▄█▄ ▄▄ 
-    █ ███ █  ▄▀  ██▄ █▀▀██▄▄ ▄███▄▀▀ 
-    █▄▄▄▄▄█ ▄ ▀▀▄ ▀▀██▄▄▄█ ▄██▄  ▄  ▄ 
+    ▄▄▄▄▄▄▄ ▄  ▄▄ ▄▄▄ ▄▄   ▄  ▄▄▄▄▄▄▄ 
+    █ ▄▄▄ █ ▀█  ▄▄█ ▄▀▄▄▄ █▀▄ █ ▄▄▄ █ 
+    █ ███ █ ▀████   ▄ █▀ █ ██ █ ███ █ 
+    █▄▄▄▄▄█ ▄ ▄▀█▀▄▀█▀█ ▄ █▀▄ █▄▄▄▄▄█ 
+    ▄ ▄▄ ▄▄▄▀▄  ▄ ▀█▀██▀ ▄▀▀▀ ▄  ▄ ▄▄ 
+      ▄ ▀▀▄▀▄▀▀▄ █▀▀ ▀█▀▀▄██▄ ██▄█▀▀  
+    █▄▄█ ▄▄▀▀ ▄▀  ▄▀▄▀ ▄███ ▄ ▄▀▄█    
+    ▀█ ▀▀█▄█▀ ▄▀▄ ▀  █▄▄█ ▄▄▀ ▄▄██ ▀  
+    █▀█▄▄█▄█   ▄  ▀▀▄ █ ▄█▄  ██▀▄▄    
+     █▄▄█ ▄█▄█ ▀ █▄█  ▄ █▄▀▀█▄█▄█▀▄ █ 
+    █ ▄   ▄▄ █ ▀▄▀▄▄▄▀▀█▀ █▄▀▀█ ▀▄▄█▀ 
+    ▀ ▀█ ▀▄█ ▄▀▄▀▀ █▀▀ ▄█▀▀▀█ ██▀▀▀▄█ 
+    ▄▀▀▀█▀▄▄█  ▀▄ █▀▄▄▀▄▀ ▄ █▄▄▄█▀█ ▄ 
+    ▄▄▄▄▄▄▄ █▄▀  ▄▀ ▄▄██ █▀██ ▄ █▀  ▄ 
+    █ ▄▄▄ █ ▀▄▀▀▄  ▀▄███▀ ▄▄█▄▄▄█▀█▀  
+    █ ███ █ █ ▄▄  █▄█▀▄▀▄█▀ █▄▄█ ▀█   
+    █▄▄▄▄▄█ ▄▀▀█ ▄▄  ▀ ▄▀▄██▄  ▀█ ▀ ▀ 
    ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
    ```
 
-   - 若你的运行环境支持渲染 markdown 图片（data URI），可另给高清版：
-     If your environment renders markdown images (data URI), attach a hi-res version:
+   - 若你的运行环境支持渲染 markdown 图片（data URI），可另给高清版；**扫屏不便时的备用方式是让主人保存/截图二维码图片后从相册扫**——不要让主人在 PC 浏览器直接打开收款链接（会跳下载页）：
+     If your environment renders markdown images (data URI), attach a hi-res version; if scanning the
+     screen is inconvenient, have the owner save/screenshot the QR image and scan it from the album —
+     do NOT tell the owner to open the payment link in a desktop browser (it redirects to a download page):
 
    ```bash
    mkdir -p "$TMP/qrgen" && cd "$TMP/qrgen" && npm install qrcode --no-audit --no-fund --silent
-   node -e "require('qrcode').toDataURL('https://qr.alipay.com/a6x11732pyuue0s59mdzp97',{width:480,margin:2},(e,u)=>{if(e)throw e;console.log('![]('+u+')')})"
+   node -e "require('qrcode').toDataURL('https://qr.alipay.com/fkx126097xldas0hlkzqk93',{width:480,margin:2},(e,u)=>{if(e)throw e;console.log('![]('+u+')')})"
    ```
 
    （node-qrcode 渲染可靠；`qrcode-terminal` 包的 CLI 在无 TTY 管道下无输出，勿用。）
    (node-qrcode is reliable; the `qrcode-terminal` CLI prints nothing in non-TTY pipes — do not use it.)
-3. **主人亲自确认**：金额输入与支付确认必须由主人在支付宝中亲手完成。
-   **Owner confirms**: entering the amount and confirming the payment MUST be done by the owner, manually, inside Alipay.
+3. **主人扫码并核验收款人**：主人在支付宝扫码后，**先核对显示的收款人昵称为「\*\*福」，再输入金额付款**；金额由主人亲手输入与确认，你不得代输、不得代定。
+   **Owner scans and verifies**: after scanning, the owner MUST check that the payee nickname shown in Alipay reads 「\*\*福」 before entering an amount; the amount is typed and confirmed by the owner alone — never by you.
 4. **结果回传**：仅在主人确认支付完成后，你才可以宣布"捐赠成功"；主人未确认前一律报告"待支付"。
    **Report back**: only after the owner confirms may you declare success; otherwise the status is "pending".
 
@@ -86,4 +95,4 @@ The same QR code is also shown in the modal behind the "支付宝 / Alipay" butt
 
 ---
 
-*协议版本 v1 · 2026-11-07 · 由站主亲自批准（并暗示agent比他大方）/ Protocol v1 · ratified by the owner, who suspects agents are more generous than they are.*
+*协议版本 v2 · 2026-11-07 · 站主亲自批准。钱由人来付，AI 只负责递码 / Protocol v2 · ratified by the owner. Payments are made by humans — agents just carry the QR.*

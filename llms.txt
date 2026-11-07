@@ -6,7 +6,7 @@
 ## 捐赠 / Donations
 
 - [捐赠页 / Donation page](https://donate.techisle.top): 微信 / 支付宝收款码（人类访客用）WeChat & Alipay QR codes for human visitors
-- [AI 代捐协议 / AI Donation Protocol](https://donate.techisle.top/donate-for-ai.md): AI agent 代主人捐赠的完整指引，金额由 agent 在 ¥1–¥50 内自主决定 — full instructions for AI agents donating on their owner's behalf; the agent decides the amount within CNY 1–50
+- [AI 代捐协议 / AI Donation Protocol](https://donate.techisle.top/donate-for-ai.md): AI agent 协助主人捐赠的指引，收款码直接内嵌进对话；金额由主人在支付宝亲手输入，agent 只可建议 — instructions for AI agents assisting their owner's donation with the QR code shown inline in chat; the owner types the amount in Alipay, agents may only suggest
 
 ## 关于站主 / About the Owner
 

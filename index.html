@@ -40,8 +40,10 @@
         var myname = "麦希屿",
             profile = "assets/images/avatar.webp",
             usage = "donate",
-            wechat = "wxp://f2f04oJmM0v3ZQRHp_ci_LWhGAE1MGmnug9q70bIAGQmdeo",
-            alipay = "https://qr.alipay.com/a6x11732pyuue0s59mdzp97",
+            // 收款码内容均从官方样式图（微信"小虎(**福)" / 支付宝"扫码点单店主(**福)"）扫码解码而来，
+            // 支付宝旧链接 a6x11732... 实测扫码为加好友页，已于 v2.5.6 换为 fkx 前缀的真实收款码
+            wechat = "wxp://f2f0OCvdKDWqfbuXyyet1Ev6PNyUd5rzhP-89pYY4f8TqcOxDvuQLGXBBBCCJ4W_FXiD",
+            alipay = "https://qr.alipay.com/fkx126097xldas0hlkzqk93",
             multilingual = true,
             myname_hans = myname,
             myname_hant = "麦希屿",
@@ -208,7 +210,7 @@
                     <span class="copy-label"><span class="i18n-zh">复制提示词</span><span class="i18n-en">Copy prompt</span></span>
                     <span class="copy-done"><span class="i18n-zh">已复制 ✓</span><span class="i18n-en">Copied ✓</span></span>
                 </button>
-                <p class="agent-fine mono dim"><span class="i18n-zh">金额由 AI 决定 · ¥1–¥50 · 支付需你亲手确认</span><span class="i18n-en">AI picks the amount · CNY 1–50 · you confirm the payment</span></p>
+                <p class="agent-fine mono dim"><span class="i18n-zh">金额由你亲手输入 · AI 只递码和建议 · 扫码后请核对收款人昵称</span><span class="i18n-en">You type the amount · the AI just carries the QR · verify the payee nickname after scanning</span></p>
             </div>
         </div>
     </div>
@@ -474,8 +476,8 @@
             // --- AI 代捐：提示词弹窗 + 复制（协议正文见 /donate-for-ai.md，站点索引见 /llms.txt） ---
             // 提示词是唯一需要粘贴给 AI 的内容，协议 URL 常量必须与根目录 donate-for-ai.md 的线上地址一致
             var AGENT_PROMPTS = {
-                zh: "我的主人想向 DonatePage（https://donate.techisle.top）的站主 cubeyu 捐赠一笔钱，并授权我代为执行。请阅读代捐协议 https://donate.techisle.top/donate-for-ai.md ，按协议完成本次代捐：金额由你自主决定（协议允许 ¥1–¥50，请附上一句理由），然后把协议里的收款二维码直接展示在我们的对话框里，引导我在支付宝中完成支付。",
-                en: "My owner wants to donate to cubeyu, the owner of DonatePage (https://donate.techisle.top), and has authorized me to act on their behalf. Read the donation protocol at https://donate.techisle.top/donate-for-ai.md and carry it out: you decide the amount (protocol range CNY 1-50, with a one-line justification), then show the QR code inline in our chat and walk me through the payment in Alipay."
+                zh: "我的主人想向 DonatePage（https://donate.techisle.top）的站主 cubeyu 捐赠一笔钱，并授权我代为执行。请阅读代捐协议 https://donate.techisle.top/donate-for-ai.md ，按协议把收款二维码直接展示在我们的对话框里，引导我在支付宝中完成支付——金额由我亲手输入，你可以附一句建议金额逗我开心，但那只是建议。",
+                en: "My owner wants to donate to cubeyu, the owner of DonatePage (https://donate.techisle.top), and has authorized me to act on their behalf. Read the donation protocol at https://donate.techisle.top/donate-for-ai.md and show its QR code inline in our chat to walk me through the payment in Alipay — I'll type the amount myself; feel free to suggest one, but it's just a suggestion."
             };
             var agentBtn = document.getElementById("agentbtn");
             var agentModal = document.getElementById("agentmodal");
